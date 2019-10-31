@@ -37,10 +37,18 @@ var Timeline = function (endpoint) {
 
     $(modalExtra + '.modal-body').html(inputsHTML);
 
+    var footer = $(modalExtra + '.modal-footer');
+    var btn = footer.get()[0].querySelector('[data-send-changes]');
+
+    if (btn)
+        btn.remove();
+
+
     if ([2, 4].indexOf(projeto.fase) != -1) {
-      $(modalExtra + '.modal-footer').append(`
-        <button type="button" class="btn btn-primary" data-send-changes>Enviar alterações</button>
-      `);
+
+        footer.append(`
+            <button type="button" class="btn btn-primary" data-send-changes>Enviar alterações</button>
+        `);
 
       $('[data-send-changes]').click(function (e) {
 
@@ -199,8 +207,6 @@ var Timeline = function (endpoint) {
 
     $(document.body).prepend(_getInitialModalHTML(projeto));
 
-    _setInputPopupStructure(projeto.status.negado ? 'negado' : projeto.fase);
-
     var fases = [
       {
         icon: _getIcon(''),
@@ -260,7 +266,7 @@ var Timeline = function (endpoint) {
               href="#" 
               data-toggle="modal" 
               data-target="#modal-extra-${ projeto._id.$oid}"
-              data-open-to-input`;
+              data-open-to-input=${index}`;
         }
 
         return `
@@ -276,6 +282,12 @@ var Timeline = function (endpoint) {
       }
       </div>
     `;
+
+    target.querySelectorAll('[data-open-to-input]').forEach(function(elemento) {
+        elemento.addEventListener('click', function (e) {
+            _setInputPopupStructure(projeto.status.negado ? 'negado' : parseInt(elemento.getAttribute('data-open-to-input')));
+        });
+    });
   }
 
   return {
