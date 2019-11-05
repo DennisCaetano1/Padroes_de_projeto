@@ -1,4 +1,4 @@
-package Cadi;
+package cadi.hello;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -13,8 +13,6 @@ import org.json.JSONObject;
 
 import com.mongodb.client.FindIterable;
 
-import hello.Jwt;
-import hello.EmailService;
 import spark.Request;
 import spark.Response;
 import spark.Route;

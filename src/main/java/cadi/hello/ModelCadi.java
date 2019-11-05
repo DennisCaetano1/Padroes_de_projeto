@@ -1,4 +1,4 @@
-package Cadi;
+package cadi.hello;
 
 import java.util.ArrayList;
 import java.util.List;

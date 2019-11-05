@@ -1,17 +1,17 @@
-package hello;
-import com.mongodb.MongoClient;
+package empresario.hello;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import com.mongodb.BasicDBObject;
+import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.FindOneAndUpdateOptions;
 import com.mongodb.client.result.DeleteResult;
-import antenaJwtAuth.IJwtModel;
 
-public class Model implements IJwtModel{
+
+public class Model{
 
 
 	MongoClient mongoClient = new MongoClient( "127.0.0.1" );
