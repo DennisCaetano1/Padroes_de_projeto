@@ -33,7 +33,7 @@ public class emailService {
             simpleEmail.setSSLOnConnect(SSL_FLAG);
             simpleEmail.setFrom(fromAddress);
             simpleEmail.setSubject(emailSubject);
-            simpleEmail.setSubject(emailBody+("http://127.0.0.1:8081/active/"+basemeiaquatro));
+            simpleEmail.setContent(emailBody+("http://127.0.0.1:8081/active/"+basemeiaquatro), "text/html");
             simpleEmail.addTo(this.destinatario.getString("email"));
             simpleEmail.send();
         }catch(Exception ex){
