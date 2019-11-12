@@ -28,7 +28,6 @@ public class ModelCadi {
 		FindIterable<Document> found = projects.find(new Document(chave, valor));
 		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
 				.collect(Collectors.joining(", ", "[", "]"));
-		// System.out.println(foundJson);
 		return foundJson;
 	}
 	public String searchUsuario(String chave, String valor) {
@@ -37,27 +36,26 @@ public class ModelCadi {
 		FindIterable<Document> found = projects.find(new Document(chave, valor));
 		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
 				.collect(Collectors.joining(", ", "[", "]"));
-		// System.out.println(foundJson);
 		return foundJson;
 	}
-	public FindIterable<Document> buscaPorDono(String email) {
+	
+	public String buscaPorDono(String email) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> projetos = db.getCollection("projeto");
 		FindIterable<Document> found = projetos.find(new Document("responsavel-cadi", email));
-
-		return found;
+		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
+				.collect(Collectors.joining(", ", "[", "]"));
+		return foundJson;
 	}
+	
 	public String buscaSemDono() {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> projects = db.getCollection("projeto");
 		FindIterable<Document> found = projects.find(new Document("responsavel-cadi", ""));
 		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
 				.collect(Collectors.joining(", ", "[", "]"));
-		// System.out.println(foundJson);
 		return foundJson;
 	}
-	
-
 
 	public void addCADI(Document doc) {
 		MongoDatabase db = mongoClient.getDatabase("app");
@@ -70,8 +68,7 @@ public class ModelCadi {
 		MongoCollection<Document> projeto = db.getCollection("projeto");
 		projeto.insertOne(doc);
 	}
-	
-	//teste
+
 	public void addProfessores(Document doc) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> professor = db.getCollection("professor");
@@ -94,7 +91,6 @@ public class ModelCadi {
 		BasicDBObject query = new BasicDBObject();
 		query.append("id", cadi.get("id"));
 		cadis.replaceOne(query, cadi);
-		//cadis.findOneAndUpdate(query, cadi, (new FindOneAndUpdateOptions()).upsert(true));
 		return cadi;
 	}
 
@@ -104,14 +100,15 @@ public class ModelCadi {
 		MongoCollection<Document> cadi = db.getCollection("cadi");
 		Document found = cadi.find(new Document("email", email)).first();
 		return found;
-
 	}
 
-	public FindIterable<Document> listaProjetos() {
+	public String listaProjetos() {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> projetos = db.getCollection("projeto");
 		FindIterable<Document> found = projetos.find();
-		return found;
+		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
+				.collect(Collectors.joining(", ", "[", "]"));
+		return foundJson;
 	}
 
 	
@@ -127,11 +124,13 @@ public class ModelCadi {
 	}
 	
 	//test profs
-	public FindIterable<Document> listProf() {
+	public String listProf() {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> prof = db.getCollection("professor");
 		FindIterable<Document> found = prof.find();
-		return found;
+		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
+				.collect(Collectors.joining(", ", "[", "]"));
+		return foundJson;
 	}
 
 	public void alterarId (String id, Document alteracao){
@@ -139,15 +138,13 @@ public class ModelCadi {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> cadiF = db.getCollection("cadi");
 		cadiF.updateOne(filter, alteracao);
-		}
+	}
 	
 	public void addReuniao(Document doc) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> reuniao = db.getCollection("reuniao");
 		reuniao.insertOne(doc);
-
 	}
-	
 	
 	/*Update*/
 	public Document updateProjeto(Document projeto) {
@@ -159,7 +156,6 @@ public class ModelCadi {
 		return projetos.findOneAndUpdate(query, newDocument, (new FindOneAndUpdateOptions()).upsert(true));
 	}
 	
-	
 	public Document updateCadi(Document projeto) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> projetos = db.getCollection("cadi");
@@ -168,7 +164,5 @@ public class ModelCadi {
 		Bson newDocument = new Document("$set", projeto);
 		return projetos.findOneAndUpdate(query, newDocument, (new FindOneAndUpdateOptions()).upsert(true));
 	}
-	
-	
 
 }

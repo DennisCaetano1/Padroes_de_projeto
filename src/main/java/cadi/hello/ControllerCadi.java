@@ -4,14 +4,11 @@ import static spark.Spark.get;
 import static spark.Spark.post;
 
 import java.util.Base64;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import org.bson.Document;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.mongodb.client.FindIterable;
 
 import spark.Request;
 import spark.Response;
@@ -42,14 +39,11 @@ public class ControllerCadi {
 
 				try {
 					response.header("Access-Control-Allow-Origin", "*");
-
 					// set
 					JSONObject myjson = new JSONObject(request.body());
 					Jwt AuthEngine = new Jwt();
-					
 					// try to find user
 					Document user = model.searchByEmail(myjson.getString("email"));
-
 					String email = user.getString("email");
 					String senhaDigitada = myjson.getString("senha");
 					String senhaArmazenada = user.getString("senha");
@@ -104,13 +98,11 @@ public class ControllerCadi {
 		});
 	}
 	
-
 	public void loginCadi() {
 		post("/cadi", new Route() {
 			@Override
 			public Object handle(Request request, Response response) throws Exception {
 				response.header("Access-Control_Allow-Origin", "*");
-
 				JSONObject json = new JSONObject(request.body());
 				String email = json.getString("email");
 				String senha = json.getString("senha");
@@ -128,6 +120,7 @@ public class ControllerCadi {
 			}
 		});
 	}
+	
 	public void atribuirProjeto() {
 		post("/semdono", (Request request, Response response) -> {
 			response.header("Access-Control-Allow-Origin", "*");
@@ -136,18 +129,9 @@ public class ControllerCadi {
 			return model.buscaSemDono();
 		});
 	}
+
 	public void inserirCADI() {
-		/*post("/cadicadastro", (Request request, Response response) -> {
 
-			System.out.println("Chamou");
-			response.header("Access-Control-Allow-Origin", "*");
-
-			Document cadi = Document.parse(request.body());
-
-			model.addCADI(cadi);
-
-			return cadi.toJson();
-		});*/
 		post("/cadicadastro", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
@@ -155,11 +139,8 @@ public class ControllerCadi {
 					response.header("Access-Control-Allow-Origin", "*");
 					String jsonString = request.body();
 					Document userData = Document.parse(jsonString);
-
 					userData.append("ativo", false);
-
 					Document found = model.searchByEmail(userData.getString("email"));
-
 					if (found == null || found.isEmpty()) {
 						model.addCADI(userData);
 						new EmailService(userData).sendSimpleEmail();
@@ -172,7 +153,6 @@ public class ControllerCadi {
 				}
 			}
 		});
-		
 	}
 	
 	public void atualizaCadi() {
@@ -190,11 +170,7 @@ public class ControllerCadi {
 		get("/projetos", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
-
-				FindIterable<Document> projectsFound = model.listaProjetos();
-
-				return StreamSupport.stream(projectsFound.spliterator(), false).map(Document::toJson)
-						.collect(Collectors.joining(", ", "[", "]"));
+				return model.listaProjetos();
 			}
 		});
 	}
@@ -203,6 +179,7 @@ public class ControllerCadi {
 		get("/search", (request, response) -> {
 			return model.search(request.queryParams("chave"), request.queryParams("valor"));
 		});
+		
 		post("/usuarioLogado", (request, response) -> {
 			JSONObject json = new JSONObject(request.body());
 			String email = json.getString("email");
@@ -213,10 +190,7 @@ public class ControllerCadi {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = request.queryString();
-				FindIterable<Document> projectFound = model.buscaPorDono(email);
-				return StreamSupport.stream(projectFound.spliterator(), false)
-						.map(Document::toJson)
-						.collect(Collectors.joining(", ", "[", "]"));
+				return model.buscaPorDono(email);
 			}
 		});
 		get("/semdono", (request, response) -> {
@@ -225,25 +199,19 @@ public class ControllerCadi {
 		
 		post("/putProf", (request, response) -> {
 			Document projetoComProfessor = Document.parse(request.body());
-
 			model.updateProjeto(projetoComProfessor);
-
 			return projetoComProfessor.toJson();
 		});
 		
 		post("/putCadi", (request, response) -> {
 			Document projetoComCadi = Document.parse(request.body());
-
 			model.updateProjeto(projetoComCadi);
-
 			return projetoComCadi.toJson();
 		});
 		
 		post("/pulafase", (request, response) -> {
 			Document projeto = Document.parse(request.body());
-
 			model.updateProjeto(projeto);
-
 			return projeto.toJson();
 		});
 
@@ -251,13 +219,9 @@ public class ControllerCadi {
 	
 	public void inserirReuniao() {
 		get("/reuniao", (Request request, Response response) -> {
-
 			response.header("Access-Control-Allow-Origin", "*");
-
 			Document reuniao = Document.parse(request.body());
-
 			model.addReuniao(reuniao);
-
 			return reuniao.toJson();
 		});
 	}
@@ -291,17 +255,13 @@ public class ControllerCadi {
 			return model.listCadi();
 		});
 	}
+	
 	public void listProf() {
 		get("/listarProf", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
-
-				FindIterable<Document> profsFound = model.listProf();
-
-				return StreamSupport.stream(profsFound.spliterator(), false).map(Document::toJson)
-						.collect(Collectors.joining(", ", "[", "]"));
+				return model.listProf();
 			}
 		});
 	}
-
 }
