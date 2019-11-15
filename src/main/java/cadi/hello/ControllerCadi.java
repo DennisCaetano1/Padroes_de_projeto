@@ -17,6 +17,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import antena.utils.*;
 public class ControllerCadi {
 
 	private ModelCadi model;
@@ -35,7 +36,7 @@ public class ControllerCadi {
 		WhoIsauth = whoIsauth;
 	}
 	
-	public void Auth() { // Gera um token de autenticação para o usuário
+	public void Auth() { // Gera um token de autenticaï¿½ï¿½o para o usuï¿½rio
 		post("/Auth", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
@@ -60,7 +61,7 @@ public class ControllerCadi {
 						return AuthEngine.GenerateJwt(email);
 					}
 					response.status(403);
-					return "Usuário inexistente ou inativo";
+					return "Usuï¿½rio inexistente ou inativo";
 
 				} catch (JSONException ex) {
 					return "erro 500 " + ex;
@@ -69,7 +70,7 @@ public class ControllerCadi {
 		});
 	}
 	
-	public boolean IsAuth(String body) { // Verifica se o usuário está autenticado
+	public boolean IsAuth(String body) { // Verifica se o usuï¿½rio estï¿½ autenticado
 		try {
 			// setting
 			JSONObject myjson = new JSONObject(body);
@@ -90,7 +91,7 @@ public class ControllerCadi {
 		}
 	}
 	
-	public void ativarUsuario() { // é chamado quando o usuario recebe o link de ativação no email
+	public void ativarUsuario() { // ï¿½ chamado quando o usuario recebe o link de ativaï¿½ï¿½o no email
 		get("/active/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
@@ -162,10 +163,13 @@ public class ControllerCadi {
 
 					if (found == null || found.isEmpty()) {
 						model.addCADI(userData);
-						new EmailService(userData).sendSimpleEmail();
+						new emailService(userData).sendSimpleEmail(
+								"Antenas - Sua confirmaÃ§Ã£o de conta",
+								"Por favor, para confirmar sua conta, clique no link: "
+								);
 						return userData.toJson();
 					} else {
-						return "Email já cadastrado";
+						return "Email jï¿½ cadastrado";
 					}
 				} catch (Exception ex) {
 					return "erro 500 " + ex;

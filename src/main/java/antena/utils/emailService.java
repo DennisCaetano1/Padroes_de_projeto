@@ -1,4 +1,4 @@
-package empresario.hello;
+package antena.utils;
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
 import org.apache.commons.mail.SimpleEmail;
@@ -13,7 +13,7 @@ public class emailService {
 
     private Document destinatario;
 
-    emailService(Document destinatario) {
+    public emailService(Document destinatario) {
         this.destinatario = destinatario;
     }
 
