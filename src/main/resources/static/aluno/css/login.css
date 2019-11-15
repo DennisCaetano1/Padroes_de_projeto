@@ -1,0 +1,41 @@
+#frm-login #control-aluno{
+	padding: 20px;
+	border: solid 2px #0072bb;
+	border-radius: 5px;
+	width: 30%;
+}
+.icon-user{
+	margin: 0 auto;
+	text-align: center;
+	font-size: 5em;
+	color: #0072bb;
+}
+
+#login input{
+	border:none;
+	border-bottom: 1px solid black;
+	width: 80%;
+	margin:10px 20px;
+}
+#login input:focus {
+	outline: none;
+    border-bottom: solid 1px #0072bb;
+    transition: all linear 0.2s;
+}
+
+.btnlogin{
+	border:none;
+	background: #008eea;
+	padding: 10px;
+	color: white;
+	font-weight: 700;
+	font-size: 1em;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all linear 0.2s;
+}
+.btnlogin:hover{
+	transition: all linear 0.2s;
+	background: #264abf;
+
+}

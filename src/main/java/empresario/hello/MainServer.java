@@ -4,10 +4,13 @@ import static spark.Spark.*;
 import org.bson.Document;
 import cadi.hello.ModelCadi;
 import cadi.hello.ControllerCadi;
+import aluno.hello.ControllerAluno;
+import aluno.hello.ModelAluno;
 
 public class MainServer {
 	final static Model model = new Model();
 	final static ModelCadi modelCadi = new ModelCadi();
+	final static ModelAluno modelAluno = new ModelAluno();
 
     public static void main(String[] args) {
 
@@ -26,6 +29,8 @@ public class MainServer {
 //		initializeModelEmpresario();
         initializeControllerEmpresario();
         initializeControllerCadi();
+        initializeControllerAluno();
+//        initializeModelAluno();
 //        initializeModelCadi();
     }
     
@@ -84,5 +89,23 @@ public class MainServer {
     	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste2', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 3, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
     	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste3', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 4, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
     }
+
+    public static void initializeControllerAluno() {
+    	ControllerAluno controller = new ControllerAluno(modelAluno);
+		controller.inserirAluno();
+	    controller.search();
+	    controller.loginAluno();
+	    controller.projetos();
+	    controller.atribuirProjeto();
+    }
     
+    public static void initializeModelAluno() {
+    	//modelAluno.addAluno(Document.parse("{'email':'leo@antenas.com','name':'Leo', 'senha':'12345', 'nivel':'1'}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id': '1234', 'nome':'Programa sempre teste!', 'fase':'2', 'responsavel-aluno': '', 'responsavel-prof': '','responsavel-cadi':'joao@email.com'}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id':'4321','nome':'Codigo elegante', 'fase':'1', 'responsavel-aluno': '','responsavel-cadi':'joao@email.com'}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id': '2', 'nome':'Integra-me', 'fase':'1', 'responsavel-aluno': '','responsavel-cadi':''}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id': '666', 'nome':'Integra-me', 'fase':'1', 'responsavel-aluno': '','responsavel-cadi':''}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id': '999', 'nome':'Integra-me', 'fase':'1', 'responsavel-aluno': '','responsavel-cadi':''}"));
+    	//modelAluno.addProjeto(Document.parse("{'_id': '222', 'nome':'Integra-me', 'fase':'1', 'responsavel-aluno': '','responsavel-cadi':''}"));
+    }
 }
