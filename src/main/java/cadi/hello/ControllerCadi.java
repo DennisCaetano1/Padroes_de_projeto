@@ -92,13 +92,13 @@ public class ControllerCadi {
 	}
 	
 	public void ativarUsuario() { // � chamado quando o usuario recebe o link de ativa��o no email
-		get("/active/:email", new Route() {
+		get("/active/cadi/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
 				Document found = model.ativarCadi(email);
 				if (!found.isEmpty()) {
-					response.redirect("http://localhost:8083/cadi/index.html");
+					response.redirect("http://localhost:8081/cadi/index.html");
 				}
 				return null;
 			}
@@ -165,7 +165,8 @@ public class ControllerCadi {
 						model.addCADI(userData);
 						new emailService(userData).sendSimpleEmail(
 								"Antenas - Sua confirmação de conta",
-								"Por favor, para confirmar sua conta, clique no link: "
+								"Por favor, para confirmar sua conta, clique no link: ",
+								"cadi"
 								);
 						return userData.toJson();
 					} else {

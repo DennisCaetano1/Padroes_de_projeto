@@ -17,7 +17,7 @@ public class emailService {
         this.destinatario = destinatario;
     }
 
-    public void sendSimpleEmail(String emailSubject, String emailBody) {
+    public void sendSimpleEmail(String emailSubject, String emailBody, String module) {
         String userName = "sendEmailMD@gmail.com";
         String password = "210418md";
 
@@ -33,7 +33,7 @@ public class emailService {
             simpleEmail.setSSLOnConnect(SSL_FLAG);
             simpleEmail.setFrom(fromAddress);
             simpleEmail.setSubject(emailSubject);
-            simpleEmail.setContent(emailBody+("http://127.0.0.1:8081/active/"+basemeiaquatro), "text/html");
+            simpleEmail.setContent(emailBody+("http://127.0.0.1:8081/active/"+module+"/"+basemeiaquatro), "text/html");
             simpleEmail.addTo(this.destinatario.getString("email"));
             simpleEmail.send();
         }catch(Exception ex){

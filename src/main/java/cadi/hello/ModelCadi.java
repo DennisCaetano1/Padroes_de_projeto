@@ -89,22 +89,15 @@ public class ModelCadi {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> cadis = db.getCollection("cadi");
 		Document cadi = searchByEmail(email);
-		cadis.deleteOne(cadi);
 		cadi.replace("ativo", true);
-		BasicDBObject query = new BasicDBObject();
-		query.append("id", cadi.get("id"));
-		cadis.replaceOne(query, cadi);
-		//cadis.findOneAndUpdate(query, cadi, (new FindOneAndUpdateOptions()).upsert(true));
-		return cadi;
+		return updateCadi(cadi);
 	}
 
-	
 	public Document searchByEmail(String email) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> cadi = db.getCollection("cadi");
 		Document found = cadi.find(new Document("email", email)).first();
 		return found;
-
 	}
 
 	public FindIterable<Document> listaProjetos() {

@@ -120,7 +120,7 @@ public class REST {
 
 					if (found == null || found.isEmpty()) {
 						model.addEmpresario(userData);
-						new emailService(userData).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link: ");
+						new emailService(userData).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link: ", "empresario");
 						return userData.toJson();
 					} else {
 						return "Email já cadastrado";
@@ -223,7 +223,7 @@ public class REST {
     }
 
     public void ativarUsuario() { // é chamado quando o usuario recebe o link de ativação no email
-		get("/active/:email", new Route() {
+		get("/active/empresario/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
