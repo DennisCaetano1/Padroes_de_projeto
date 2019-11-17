@@ -223,7 +223,7 @@ function _AlunosPresentes(project){
     $btn_remove.click(function(e){
        project.alunos.splice(remover, 1);
         $.post("/updateProjetoProfessor", JSON.stringify({'_id':project._id, 'alunos': project.alunos}), "json");
-        location.reload();
+        $(this).closest('tr').remove();
     });
 
     $('[td_body_aluno]').append(td);
