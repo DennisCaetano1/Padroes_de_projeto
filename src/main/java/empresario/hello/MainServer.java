@@ -3,12 +3,15 @@ package empresario.hello;
 import static spark.Spark.*;
 import org.bson.Document;
 import cadi.hello.ModelCadi;
+import professor.hello.ControllerProfessor;
+import professor.hello.ModelProfessor;
 import cadi.hello.ControllerCadi;
 
 public class MainServer {
 	final static Model model = new Model();
 	final static ModelCadi modelCadi = new ModelCadi();
-
+	final static ModelProfessor modelProf = new ModelProfessor();
+	
     public static void main(String[] args) {
 
 		// Get port config of heroku on environment variable
@@ -27,6 +30,8 @@ public class MainServer {
         initializeControllerEmpresario();
         initializeControllerCadi();
 //        initializeModelCadi();
+        initializeControllerProfessor();
+        //initializeModelProfessor();
     }
     
     public static void initializeControllerEmpresario() {
@@ -83,6 +88,28 @@ public class MainServer {
     	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste1', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : '', 'descricao-tecnologias' : '', 'link-externo-1' : '', 'link-externo-2' : '', 'fase' : 1, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
     	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste2', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 3, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
     	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste3', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 4, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
+    }
+    
+    public static void initializeControllerProfessor() {
+    	ControllerProfessor controller = new ControllerProfessor(modelProf);
+    	controller.Auth();
+	    controller.ativarUsuario();  
+	    controller.loginProfessor();
+	    controller.updateProjetoProfessor();
+	    controller.searchprofessor();
+	    controller.atualizaProfessor();
+    }
+
+    public static void initializeModelProfessor(){
+    	//Professores
+    	modelProf.addProfessor(Document.parse("{'name':'Giuliano', 'email':'Giuliano@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
+    	modelProf.addProfessor(Document.parse("{'name':'Sakaue', 'email':'Sakaue@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
+    	modelProf.addProfessor(Document.parse("{'name':'Nanci', 'email':'Nanci@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
+    	
+    	model.addProjeto(Document.parse("{'titulo':'Teste','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Giuliano@fatec.sp.gov.br'},{'email':'Sakaue@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
+    	model.addProjeto(Document.parse("{'titulo':'Teste2','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Nadalete@fatec.sp.gov.br'},{'email':'Sakaue@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
+    	model.addProjeto(Document.parse("{'titulo':'Teste3','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Giuliano@fatec.sp.gov.br'},{'email':'Nadalete@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
+    	model.addProjeto(Document.parse("{'titulo':'Teste4','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Nadalete@fatec.sp.gov.br'},{'email':'Giuliano@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
     }
     
 }
