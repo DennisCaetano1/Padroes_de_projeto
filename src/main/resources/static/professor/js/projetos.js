@@ -15,7 +15,7 @@ if(session_login == null){
       }, "json");
  
     
-/* </> Informações do Usuário CADI */
+/* </> Informações do Usuário Professor */
 
 
        /* <> Rotas de inicialização dos objetos */
@@ -114,7 +114,7 @@ if(session_login == null){
 
 function userData(user){
       /* <> Logou do Usuário */
-      let navCADI = $('[data-user]');
+      let navPROF = $('[data-user]');
       let logout = $.parseHTML(`
       <li><i class="fa fa-sign-out" aria-hidden="true"></i> 
       <button type="button" class="btn btn-danger">Logout</button></li>`);
@@ -147,13 +147,13 @@ function userData(user){
 
       /* Pupula Usuário Data */
       let data = $.parseHTML(`
-      <li>${user.name}</li>
+      <li>${user.nome}</li>
       <li>Professor</li>`);
       /* </> Pupula Usuário Data */
     
-      navCADI.append(data);
-      navCADI.append(updateSenha);
-      navCADI.append(logout);
+      navPROF.append(data);
+      navPROF.append(updateSenha);
+      navPROF.append(logout);
       $("li").addClass("list-inline-item");
   }
 

@@ -49,3 +49,8 @@
 	background: #17a2b8;
 	cursor: pointer;
 }
+
+.modal form{
+  margin: 10px;
+}
+

@@ -95,9 +95,9 @@ public class ControllerProfessor {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
-				Document found = model.ativarCadi(email);
+				Document found = model.ativarProfessor(email);
 				if (!found.isEmpty()) {
-					response.redirect("http://localhost:8083/cadi/index.html");
+					response.redirect("http://localhost:8083/professor/index.html");
 				}
 				return null;
 			}

@@ -98,6 +98,7 @@ public class MainServer {
 	    controller.updateProjetoProfessor();
 	    controller.searchprofessor();
 	    controller.atualizaProfessor();
+	    controller.inserirProfessor();
     }
 
     public static void initializeModelProfessor(){

@@ -13,11 +13,11 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 
 public class ModelProfessor {
 
-	//Fongo fongo = new Fongo("app");
 	MongoClient mongoClient = new MongoClient( "127.0.0.1" );
-	MongoDatabase db = mongoClient.getDatabase("app");
+	MongoDatabase db = mongoClient.getDatabase("professor");
 	
 	public FindIterable<Document> myProjects(Document email) {
+		
 		MongoCollection<Document> projetos = db.getCollection("projeto");
 		FindIterable<Document> found = projetos.find(new Document("responsavel-professor", email));
 
@@ -37,27 +37,23 @@ public class ModelProfessor {
 	}
 
 	public Document login(String email, String senha) {
-		MongoCollection<Document> cadi = db.getCollection("professor");
-		Document found = cadi.find(new Document("email", email).append("senha", senha)).first();
+		MongoCollection<Document> prof = db.getCollection("professor");
+		Document found = prof.find(new Document("email", email).append("senha", senha)).first();
 		return found;
 	}
 	
-	public Document ativarCadi(String email) {
-		MongoCollection<Document> cadis = db.getCollection("professor");
-		Document cadi = searchByEmail(email);
-		cadis.deleteOne(cadi);
-		cadi.replace("ativo", true);
-		BasicDBObject query = new BasicDBObject();
-		query.append("id", cadi.get("id"));
-		cadis.replaceOne(query, cadi);
-		//cadis.findOneAndUpdate(query, cadi, (new FindOneAndUpdateOptions()).upsert(true));
-		return cadi;
+
+	
+	public Document ativarProfessor(String email) {
+		Document prof = searchByEmail(email);
+		prof.replace("ativo", true);
+		return updateProfessor(prof);
 	}
 
 	
 	public Document searchByEmail(String email) {
-		MongoCollection<Document> cadi = db.getCollection("professor");
-		Document found = cadi.find(new Document("email", email)).first();
+		MongoCollection<Document> prof = db.getCollection("professor");
+		Document found = prof.find(new Document("email", email)).first();
 		return found;
 
 	}

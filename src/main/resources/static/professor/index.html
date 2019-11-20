@@ -16,8 +16,7 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.10/jquery.mask.min.js"></script>
-  
-<script src="css/styles.css" type="text/javascript>"></script>
+ 
 </head>
 
 <body> 
@@ -52,15 +51,16 @@
     </div>
 
     <div id="cadastro" class="modal">
-      <div class="modal-content animate">
-          <div class="modal-header">
-            <form  method="POST" id="form_register" >
+    
+         
+            <form  method="POST" id="form_register" class="modal-content animate">
               <div class="imgcontainer">
-                <h2 style="color:#3172C1">Cadastro</h2>
                 <span onclick="fechaPopupCadastro(event)" class="close" title="Close Modal">&times;</span>
               </div>
-            </div>
-          <div class="modal-body">
+              
+        
+          <div class="container">
+              <h2 style="color:#3172C1">Cadastro</h2>
             <label for="nome-cadastro"></label>
             <input type="text" id="nome-cadastro" placeholder="Nome" required>
             
@@ -76,12 +76,12 @@
             <label for="senha-cadastro"></label>
             <input type="password" id="senha-cadastro" placeholder="Senha" required>
             <br></br>
-          </div>
-          <div class="modal-footer">
+  
             <button id="btn-cadastro" type="submit" style="max-width:150px;">Cadastrar</button>
+            <div info-register></div>
           </div>
         </form>
-      </div>
+     
       </div>
 
 
