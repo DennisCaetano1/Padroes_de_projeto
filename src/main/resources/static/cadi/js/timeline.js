@@ -1,3 +1,4 @@
+var datas = [];
 var Timeline = function (endpoint) {
 
   if (!endpoint) {
@@ -37,7 +38,7 @@ var Timeline = function (endpoint) {
 
     $(modalExtra + '.modal-body').html(inputsHTML);
 
-    if ([1, 3].indexOf(projeto.fase) != -1) {
+    if ([1, 3, 4].indexOf(projeto.fase) != -1) {
       $(modalExtra + '.modal-footer').append(`
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <button type="button" class="btn btn-primary" aceitar-avaInit>Aceitar</button>
@@ -52,6 +53,14 @@ var Timeline = function (endpoint) {
         }
         if(projeto.fase === 3){
           $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'fase':4}), "json");
+          location.reload();
+        }
+        if(projeto.fase === 4){
+          var dataEntrega= $('#formGroupInserirEntrega').val();
+          alert(dataEntrega);
+
+          alert(datas);
+          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'datasReuniao':datas, 'dataEntrega':dataEntrega}), "json");
           location.reload();
         }
       });
@@ -152,18 +161,29 @@ var Timeline = function (endpoint) {
       <form data-form-project-change>
       <div class="form-group">
         <label for="formGroupInserirReunião">Insira data para reunião:</label>
-        <input type="datetime-local" class="form-control" name="date" id="formGroupInserirReunião" min="2019-10-14">
+        <input type="text" format = "dd-MM-yyyy" class="form-control" name="date" id="dataReuniao" min="2019-10-14">
         <span class="validity"></span>
         <br>
         <button type="button" class="btn btn-success" id="insere-data" name="insere-data">Inserir</button>
       </div>
         <script>
-            $(document).ready(function () {
-                var contaData = 0;
-                <!-- testar o js -->
+       
+             var data = $('#dataReuniao').inputmask("datetime",{
+                        mask: "1-2-y h:s", 
+                        placeholder: "dd-mm-yyyy hh:mm", 
+                        leapday: "-02-29", 
+                        separator: "-", 
+                        alias: "dd-mm-yyyy"
+                        });
+            $("#insere-data").click(function () {           
+              console.log(data);
+              datas.push(data.val());
+              var linhadata = "<tr><td>"+data.val().toString()+"</tr></td>";
+              $("#tabdata").append(linhadata);              
             });
         </script>
         <label for="data-reuniao">Datas possiveis a reunião:</label>
+
         <table class="table table-hover">
                   
               <thead>
@@ -173,7 +193,7 @@ var Timeline = function (endpoint) {
               </tr>
               </thead>
               <!-- Popula a tabela com base no JS-->
-              <tbody></tbody>
+              <tbody id="tabdata" ></tbody>
         </table>
           <!--criar script para popular array, EX.: dropdown de profs-->
         <div class="form-group">
@@ -204,6 +224,7 @@ var Timeline = function (endpoint) {
             </div>      
             <!--  <button type="submit" class="btn btn-success" data-dismiss="modal">Designar</button> --!>
         </form>
+     
       `;
     }
 
