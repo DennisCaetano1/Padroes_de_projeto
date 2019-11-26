@@ -348,20 +348,17 @@ function _formUpdateSenha(user){
     if(senhaAntiga === user.senha && senhaAntiga != null){
         if(senha1 === senha2 && senha1 != null && senha2 != null){
           $.post("/updateCadi", JSON.stringify({'_id':user._id, 'senha': senha1}), "json");
-         
+          $('#modal-footer-password').append($.parseHTML(`<div class="alert alert-success" role="alert">
+          Senha alterada com sucesso</div>`));
         }else{
-          let passNotEquals = $.parseHTML(`<div class="alert alert-danger" role="alert">
-          Senha de nova ou senha de confirmação inválidas ou não correspondentes.</div>`);
-          $('#modal-footer-password').append(passNotEquals);
+          $('#modal-footer-password').append($.parseHTML(`<div class="alert alert-danger" role="alert">
+          Senha de nova ou senha de confirmação inválidas ou não correspondentes.</div>`));
         }
     }else{
-      let passNotEquals = $.parseHTML(`<div class="alert alert-danger" role="alert">
+      $('#modal-footer-password').append($.parseHTML(`<div class="alert alert-danger" role="alert">
           Senha não corresponde com a atual!, por favor insira a senha correta.
-      </div>`);
-      $('#modal-footer-password').append(passNotEquals);
+      </div>`));
     }
-   
-
   });
 }
 
@@ -381,6 +378,7 @@ function _isAdmin(users){
                     <td scope="col">Nome</td>
                     <td scope="col">Email</td>
                     <td scope="col">Satus</td>
+                    <td></td>
                 </tr>
             </thead>
             <tbody data-user-admintab id="tabela-projetos">
@@ -400,9 +398,152 @@ function _isAdmin(users){
             <td>${ user.name }</td>
             <td>${ user.email }</td>
             <td>${ user.nivel < 1 ? 'Aguardando Aprovação' : user.nivel == 2 ? 'Administrador' : 'CADI' }</td>
+            <td id="td-pass-${user._id.$oid}"></td>
+            <td id="td-acess-${user._id.$oid}"></td>
         </tr>
     `);
+
        tbody_data_users.append(tr);
+
+      /* Alterar Senha */
+      let updateSenha = $.parseHTML(`
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-update-senha">
+          Alterar Senha
+      </button>
+      </li>`);
+
+      let $updateSenha = $(updateSenha);
+
+      $updateSenha.click(function(e){
+        e.preventDefault();
+        _formAdminUpdateSenha(user);
+      });
+
+      $('#td-pass-'+user._id.$oid).append(updateSenha);
+
+      /* Alterar Nivel De Acesso*/
+      let updateAcesso = $.parseHTML(`
+      <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modal-update-acesso">
+          Nível de Acesso
+      </button>
+      </li>`);
+
+      let $updateAcesso = $(updateAcesso);
       
+      $updateAcesso.click(function(e){
+        e.preventDefault();
+        _formUpdateAcess(user);
+      });
+
+      $('#td-acess-'+user._id.$oid).append(updateAcesso);
+
     });
+}
+
+function _formAdminUpdateSenha(user){
+
+  let form_senha =  `
+    <div class="modal fade" id="modal-update-senha" tabindex="-1" role="dialog" aria-labelledby="modal-update-senha" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Alteração de Senha</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+       Nova Senha: </label><input class="form-control" type="password" id="senha-nova1" name="senha-nova1" placeholder="Nova Senha" style="max-width:350px" required>
+       Nova Senha Novamente: </label><input class="form-control" type="password" id="senha-nova2" name="senha-nova2" placeholder="Nova Senha" style="max-width:350px" required>
+        </div>
+        <div class="modal-footer" >
+          <button type="submit" class="btn btn-primary alterarSenha" id="alterarSenha">Salvar mudanças</button>
+          <div id="modal-footer-password"></div>
+          </div>
+      </div>
+    </div>
+  </div>`;
+
+  /* Evento insere modal no HTML */
+  $(document.body).prepend(form_senha);
+  /* Evento Remove modal do HTML */
+  $('.close').click(function(e){
+    e.preventDefault();
+    $("#modal-update-senha").remove();
+    $(".modal-backdrop ").remove();
+  });
+  /* Evento submita a senha nova */
+  $('#alterarSenha').click(function(e){
+    e.preventDefault();
+    $("#modal-footer-password").html('');
+  
+    var senha1 = $("#senha-nova1").val();
+    var senha2 = $("#senha-nova2").val();
+    
+        if(senha1 === senha2 && senha1 != null && senha2 != null){
+          $.post("/updateCadi", JSON.stringify({'_id':user._id, 'senha': senha1}), "json");
+          $('#modal-footer-password').append($.parseHTML(`<div class="alert alert-success" role="alert">
+          Senha alterada com sucesso</div>`));
+        }else{
+          $('#modal-footer-password').append($.parseHTML(`<div class="alert alert-danger" role="alert">
+          Senha de nova ou senha de confirmação inválidas ou não correspondentes.</div>`));
+        }
+
+  });
+}
+
+function _formUpdateAcess(user){
+
+  let form_acess =  `
+  <div class="modal fade" id="modal-update-acesso" tabindex="-1" role="dialog" aria-labelledby="modal-update-acesso" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Atualização de acesso ao Usuário</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optNivel" value="0">Pré cadastrado
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optNivel" value="1">CADI
+            </label>
+          </div>
+          <div class="form-check">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" name="optNivel" value="2">Administrador
+            </label>
+          </div>
+      </div>
+      <div class="modal-footer" >
+        <button type="submit" class="btn btn-primary" id="submit_updateAcesso">Salvar mudanças</button>
+        <div id="modal-footer-password"></div>
+        </div>
+    </div>
+  </div>
+</div>`;
+
+ /* Evento insere modal no HTML */
+ $(document.body).prepend(form_acess);
+ /* Evento Remove modal do HTML */
+ $('.close').click(function(e){
+    e.preventDefault();
+    $("#modal-update-senha").remove();
+    $(".modal-backdrop ").remove();
+  });
+
+  $('#submit_updateAcesso').click(function() {
+    let nivel = $("input[name='optNivel']:checked").val();
+
+    if (confirm('Deseja realmente alterar o nivel de acesso do '+user.name)) {
+      $.post("/updateCadi", JSON.stringify({'_id':user._id, 'nivel': nivel}), "json");
+    }
+   
+  });
 }
