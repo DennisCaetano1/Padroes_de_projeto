@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      color: red;
+      font-weight: 900;
+    }
+
+    table,
+    td {
+      border: none;
+      border-collapse: collapse;
+      padding: 5px 20px 5px 5px;
+    }
+  </style>
+  <title>Projetos</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="js/jquery-2.3.3.min.js"></script>
+  <link rel="stylesheet" type="text/css" media="screen" href="css/index.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+  <!-- Java Script da rota dos projetos-->
+  <script src="js/adicionar.js"></script>
+
+</head>
+
+<body>
+  <div class="container">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="pill" href="#projetos">Meus projetos</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="pill" href="#projetosAtribuidos">Adicionar um novo</a>
+      </li>
+    </ul>
+  </div>
+  <div class="tab-content">
+    <div id="projetos" class="container tab-pane active"><br></br>
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col"><a onclick="alert('Ola')">ID</a></th>
+            <th scope="col">Nome</th>
+            <th scope="col">Fase</th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody id="tpjr">
+
+        </tbody>
+      </table>
+    </div>
+
+
+    <div id="projetosAtribuidos" class="container tab-pane fade"><br>
+      <div id="input_project">
+        <label for="codigo-projeto"></label>
+        <input type="text" id="codigo-projetoLabel" name="codigo-projeto" placeholder="Código do projeto:" required>
+        <button id="botao-add">Adicionar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cadastro" class="modal">
+
+    <form class="modal-content animate" method="POST" id="form_register">
+      <div class="imgcontainer">
+        <h2>Entrega</h2>
+        <span onclick="fechaPopupCadastro(event)" class="close" title="Close Modal">&times;</span>
+      </div>
+
+      <div class="container">
+        <label for="email-cadastro"><b>E-mail</b></label>
+        <table id="myTable">
+          <tr>
+            <td><input id="text" type="text"></td>
+            <td><button type="button" onclick="addStudentToList()">+</button></td>
+          </tr>
+        </table>
+        <br>
+        
+        <script type="text/javascript">
+        function addStudentToList() {
+            var textField = document.getElementById("text"); 
+            var table = document.getElementById("myTable");
+            var row = table.insertRow(table.length);
+            var cell1 = row.insertCell(table.length);
+            var cell2 = row.insertCell(table.length);
+            cell1.innerHTML = textField.value;
+            cell2.innerHTML = "<a href='#' onclick='excluir("+row.rowIndex+")'>x</a>";
+        }
+          function excluir(data) {
+            var table = document.getElementById("myTable");
+            table.deleteRow(data);
+        }
+        </script>
+
+        <label for="link-cadastro"><b>Link GitHub</b></label>
+        <input type="text" id="Link-cadastro" required>
+
+        <label for="desc-cadastro"><b>Descrição</b></label>
+        <input type="text" id="desc-cadastro" required>
+
+        <button id="btn-cadastro">Entregar</button>
+      </div>
+
+    </form>
+  </div>
+
+</body>
+
+</html>

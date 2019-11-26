@@ -14,6 +14,7 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
+import antena.utils.*;
 public class ControllerCadi {
 
 	private ModelCadi model;
@@ -32,7 +33,7 @@ public class ControllerCadi {
 		WhoIsauth = whoIsauth;
 	}
 	
-	public void Auth() { // Gera um token de autenticação para o usuário
+	public void Auth() { // Gera um token de autenticaï¿½ï¿½o para o usuï¿½rio
 		post("/Auth", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
@@ -54,7 +55,7 @@ public class ControllerCadi {
 						return AuthEngine.GenerateJwt(email);
 					}
 					response.status(403);
-					return "Usuário inexistente ou inativo";
+					return "Usuï¿½rio inexistente ou inativo";
 
 				} catch (JSONException ex) {
 					return "erro 500 " + ex;
@@ -63,7 +64,7 @@ public class ControllerCadi {
 		});
 	}
 	
-	public boolean IsAuth(String body) { // Verifica se o usuário está autenticado
+	public boolean IsAuth(String body) { // Verifica se o usuï¿½rio estï¿½ autenticado
 		try {
 			// setting
 			JSONObject myjson = new JSONObject(body);
@@ -84,14 +85,14 @@ public class ControllerCadi {
 		}
 	}
 	
-	public void ativarUsuario() { // é chamado quando o usuario recebe o link de ativação no email
-		get("/active/:email", new Route() {
+	public void ativarUsuario() { // ï¿½ chamado quando o usuario recebe o link de ativaï¿½ï¿½o no email
+		get("/active/cadi/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
 				Document found = model.ativarCadi(email);
 				if (!found.isEmpty()) {
-					response.redirect("http://localhost:8083/cadi/index.html");
+					response.redirect("http://localhost:8081/cadi/index.html");
 				}
 				return null;
 			}
@@ -143,10 +144,14 @@ public class ControllerCadi {
 					Document found = model.searchByEmail(userData.getString("email"));
 					if (found == null || found.isEmpty()) {
 						model.addCADI(userData);
-						new EmailService(userData).sendSimpleEmail();
+						new emailService(userData).sendSimpleEmail(
+								"Antenas - Sua confirmaÃ§Ã£o de conta",
+								"Por favor, para confirmar sua conta, clique no link: ",
+								"cadi"
+								);
 						return userData.toJson();
 					} else {
-						return "Email já cadastrado";
+						return "Email jï¿½ cadastrado";
 					}
 				} catch (Exception ex) {
 					return "erro 500 " + ex;
