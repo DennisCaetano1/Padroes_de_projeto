@@ -20,7 +20,7 @@ public class MainServer {
         if (process.environment().get("PORT") != null) {
             port = Integer.parseInt(process.environment().get("PORT"));
         } else {
-            port = 8083;
+            port = 8081;
         }
         port(port);
 

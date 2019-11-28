@@ -13,6 +13,7 @@ import org.json.JSONObject;
 
 import com.mongodb.client.FindIterable;
 
+import antena.utils.Jwt;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -90,20 +91,20 @@ public class ControllerProfessor {
 		}
 	}
 	
-	public void ativarUsuario() { // é chamado quando o usuario recebe o link de ativação no email
-		get("/active/:email", new Route() {
+	
+	public void ativarUsuario() { // ï¿½ chamado quando o usuario recebe o link de ativaï¿½ï¿½o no email
+		get("/active/professor/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
 				Document found = model.ativarProfessor(email);
 				if (!found.isEmpty()) {
-					response.redirect("http://localhost:8083/professor/index.html");
+					response.redirect("http://localhost:8081/professor/index.html");
 				}
 				return null;
 			}
 		});
 	}
-	
 
 	public void loginProfessor() {
 		post("/professor", new Route() {
@@ -152,7 +153,7 @@ public class ControllerProfessor {
 
 					if (found == null || found.isEmpty()) {
 						model.addProfessor(userData);
-						new EmailService(userData).sendSimpleEmail();
+						new EmailService(userData).sendSimpleEmail("Antenas - Sua confirmaÃ§Ã£o de conta", "Por favor, para confirmar sua conta, clique no link: ", "professor");
 						return userData.toJson();
 					} else {
 						return "Email já cadastrado";
