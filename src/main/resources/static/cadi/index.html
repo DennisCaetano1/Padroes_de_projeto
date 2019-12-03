@@ -53,15 +53,13 @@
     </div>
 
     <div id="cadastro" class="modal">
-      <div class="modal-content animate">
-          <div class="modal-header">
-            <form  method="POST" id="form_register" >
-              <div class="imgcontainer">
-                <h2 style="color:#3172C1">Cadastro</h2>
-                <span onclick="fechaPopupCadastro(event)" class="close" title="Close Modal">&times;</span>
-              </div>
+        <form  method="POST" id="form_register" class="modal-content animate">
+            <div class="imgcontainer">
+              <span onclick="fechaPopupCadastro(event)" class="close" title="Close Modal">&times;</span>
             </div>
-          <div class="modal-body">
+        
+          <div class="container">
+            <h2 style="color:#3172C1">Cadastro</h2>
             <label for="nome-cadastro"></label>
             <input type="text" id="nome-cadastro" placeholder="Nome" required>
             
@@ -77,11 +75,11 @@
             <label for="senha-cadastro"></label>
             <input type="password" id="senha-cadastro" placeholder="Senha" required>
             <br></br>
-          </div>
-          <div class="modal-footer">
+          
             <button id="btn-cadastro" type="submit" style="max-width:150px;">Cadastrar</button>
+            <div info-register></div>
           </div>
-        </form>
+          </form>
       </div>
       </div>
 

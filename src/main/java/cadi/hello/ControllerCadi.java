@@ -14,7 +14,8 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-import antena.utils.*;
+import antena.utils.Jwt;
+import antena.utils.emailService;
 public class ControllerCadi {
 
 	private ModelCadi model;
@@ -55,7 +56,7 @@ public class ControllerCadi {
 						return AuthEngine.GenerateJwt(email);
 					}
 					response.status(403);
-					return "Usuï¿½rio inexistente ou inativo";
+					return "Usuário inexistente ou inativo";
 
 				} catch (JSONException ex) {
 					return "erro 500 " + ex;
@@ -109,7 +110,7 @@ public class ControllerCadi {
 				String senha = json.getString("senha");
 				try {
 					Document cadi = model.login(email, senha);
-					System.out.println(cadi);
+
 					if ((Boolean)cadi.get("ativo")==true){
 						return cadi.toJson();
 					}
@@ -145,13 +146,13 @@ public class ControllerCadi {
 					if (found == null || found.isEmpty()) {
 						model.addCADI(userData);
 						new emailService(userData).sendSimpleEmail(
-								"Antenas - Sua confirmaÃ§Ã£o de conta",
+								"Antenas - Sua confirmação de conta",
 								"Por favor, para confirmar sua conta, clique no link: ",
 								"cadi"
 								);
 						return userData.toJson();
 					} else {
-						return "Email jï¿½ cadastrado";
+						return "Email já cadastrado";
 					}
 				} catch (Exception ex) {
 					return "erro 500 " + ex;
@@ -162,10 +163,10 @@ public class ControllerCadi {
 	
 	public void atualizaCadi() {
 		post("/updateCadi", (Request request, Response response) -> {
-			System.out.println("Chamou Aqui");
+
 			response.header("Access-Control-Allow-Origin", "*");
 			JSONObject json = new JSONObject(request.body());
-			System.out.println(json);
+
 			model.updateCadi(Document.parse(request.body()));
 			return model.buscaSemDono();
 		});
@@ -183,6 +184,10 @@ public class ControllerCadi {
 	public void search() {
 		get("/search", (request, response) -> {
 			return model.search(request.queryParams("chave"), request.queryParams("valor"));
+		});
+		
+		get("/searchEmpresario/:email", (request, response) -> {
+			return model.searchEmpresario(request.params("email")).toJson();
 		});
 		
 		post("/usuarioLogado", (request, response) -> {
@@ -230,30 +235,6 @@ public class ControllerCadi {
 			return reuniao.toJson();
 		});
 	}
-
-	/*
-	 * Metodo que recebe uma id pela url (ex: /alterarId?Id=8) e um json no corpo do
-	 * metodo com as alteraï¿½ï¿½es direcionadas para o objeto que tiver a Id
-	 * especificada. Ex: { 'professor':'fulano }
-	 * 
-	 * objeto final:
-	 * 
-	 * { 'id': 8, 'professor':'fulano' }
-	 */
-
-	/*public void alterarId() {
-		post("/alterarId", (req, res) -> {
-			model.alterarId(req.queryParams("id"), new Document("$set", Document.parse(req.body())));
-			return model.listCadi();
-		});
-	}
-
-	public void listCadi() {
-		get("/listarCadi", (req, res) -> {
-			return model.listCadi();
-		});
-	}
-	*/
 	
 	public void listCadi() {
 		post("/listarCadi", (req, res) -> {

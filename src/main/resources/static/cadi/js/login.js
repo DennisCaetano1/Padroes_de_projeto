@@ -21,9 +21,15 @@ $('#form_register').submit(function(e){
            //Nivel em teste!!!
            nivel: 1
        }
+    let modalfoot = $('[info-register]');
     jsonString = JSON.stringify(json);
-    $.post("/cadicadastro",jsonString,'json');
-    fechaPopupCadastro(event);
+    modalfoot.append($.parseHTML(`<div class="alert alert-primary" role="alert">Aguarde...</div>`));
+    
+    $.post("/cadicadastro",jsonString, function(data){
+        if(data.ativo == false)modalfoot.html(""); modalfoot.append($.parseHTML(`<div class="alert alert-success" role="alert">
+        Verifique seu e-mail para a ativação</div>`));
+    }, "json");
+    //fechaPopupCadastro(event);
 });
 
 $('#form_login').submit(function(e){    
