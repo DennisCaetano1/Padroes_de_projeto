@@ -39,6 +39,13 @@ public class ModelCadi {
 		return foundJson;
 	}
 	
+	public Document searchEmpresario(String email) {
+		MongoDatabase db = mongoClient.getDatabase("app");
+		MongoCollection<Document> empresarios = db.getCollection("empresario");
+		Document found = empresarios.find(new Document("email", email)).first();
+		return found;
+	}
+	
 	public String buscaPorDono(String email) {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> projetos = db.getCollection("projeto");

@@ -48,14 +48,16 @@ if(session_login == null){
                 <th scope="row">${ project.titulo }</th>
                 <td data-timeline-show></td>
                 <td>
-                  <a href="#" data-toggle="modal" data-target="#modal-mais-info">Mais informações</a>
+                  <a href="#" data-maisinfo data-toggle="modal" data-target="#modal-mais-info">Mais informações</a>
                 </td>
               </tr>
             `);
+
+          
       
             let $tr = $(tr);
-      
-            $tr.click(function(e) {
+            let a = $tr.find('[data-maisinfo]');
+            a.click(function(e) {
               
               e.preventDefault();
       
@@ -118,6 +120,8 @@ if(session_login == null){
               elements.forEach(item => {
       
                 let contentElement = item.element.find('[data-text-content]');
+
+                item.element.removeClass('d-none');
       
                 if (item.key.indexOf('link-externo') != -1) {
                   contentElement.attr('href', project[item.key]);
@@ -159,14 +163,18 @@ if(session_login == null){
                   }
                 }
                 else if (item.key === 'entregas' || item.key ==='responsavel-professor') {
-                  
+                  $('li').remove();
                   if (!project[item.key].length) {
                     item.element.addClass('d-none');
                     return;
                   }
                   else {
                     project[item.key].forEach(x => {
+                      console.log(x);
+                      contentElement.append($.parseHTML(`<li>${x['aluno-responsavel']}</li>`));
+                      x['alunos'].forEach(x => {
                       contentElement.append($.parseHTML(`<li>${x}</li>`));
+                      });
                     });
                   }
                 }
@@ -185,59 +193,74 @@ if(session_login == null){
         let tbody_semdono = $('[data-semdono-table-body]');
     
         projecs.forEach(project => {
-          let tr2 = $.parseHTML(`<tr data-project-item="${ project._id }> 
-            <th scope="row">${ project.titulo }</th>
-                <td>${ project.titulo }</td>
-                <td>${ project['descricao-breve'] }</td>
-                <td>Nome da Empresa</td>
-            </tr>
-          `);
-    
-          let $tr2 = $(tr2);
-          
-          $tr2.click(function(e) {
-              e.preventDefault();
-            
-              let modbody = $('[modal-body-semdono]');
-              let modfooter = $('[modal-footer-semdono]');
+          email = project['responsavel-empresario'];
+          var empresa;
+          var contato;
+          var $tr2
+          $.get('/searchEmpresario/'+email)
+          .done( data => {
+            //, function(data){
+              console.log(data)
+              empresa = JSON.parse(data).empresa;
+              telefone = JSON.parse(data).telefone;
+              console.log(empresa)
+              var tr2 = $.parseHTML(`<tr data-project-item="${ project._id.$oid }> 
+              <th scope="row">${ project.titulo }</th>
+                  <td>${ project.titulo }</td>
+                  <td>${ project['descricao-breve'] }</td>
+                  <td>${ empresa }</td>
+              </tr>`);
+              $tr2 = $(tr2);
+  
+              tbody_semdono.append(tr2);
 
-              let body_sd =  $.parseHTML(`
-              <div><h5>Titulo</h5><p>${ project.titulo }</p></div>
-              <div><h5>Descricao: </h5><p>${ project['descricao-breve'] }</p></div>
-              <div><h5>Empresário: </h5><p>${ project['responsavel-empresario']}</p></div>
-              <div><h5>Empresa: </h5><p>Não tem ainda</p></div>
-              <div><h5>Contato: </h5><p>Não tem ainda</p></div>
-              `);
-
-              let foot_sd = $.parseHTML(`
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Atribuir a mim</button>
-              `);
-
-              let $submit = $(foot_sd);
+              $tr2.click(function(e) {
+                e.preventDefault();
               
+                let modbody = $('[modal-body-semdono]');
+                let modfooter = $('[modal-footer-semdono]');
+  
+                let body_sd =  $.parseHTML(`
+                <div><h5>Titulo</h5><p>${ project.titulo }</p></div>
+                <div><h5>Descricao: </h5><p>${ project['descricao-breve'] }</p></div>
+                <div><h5>Empresário: </h5><p>${ project['responsavel-empresario']}</p></div>
+                <div><h5>Empresa: </h5><p>${ empresa }</p></div>
+                <div><h5>Contato: </h5><p>${ telefone }</p></div>
+                `);
+  
+                let foot_sd = $.parseHTML(`
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Atribuir a mim</button>
+                `);
+  
+                let $submit = $(foot_sd);
+                
+              
+                /* Abre modal */
+                document.getElementById('modal_semdono').style.display='block';   
             
-              /* Abre modal */
-              document.getElementById('modal_semdono').style.display='block';   
-          
-              /* Evento que fecha o modal e limpa os dados do append*/
-              $('#fecharModal').click(function(){
-                document.getElementById('modal_semdono').style.display='none'; 
-                modbody.html("");
-                modfooter.html("");
-              });
-
-              /* evento que submita a atribuição para o CADI */
-              $submit.click(function(){
-                  $.post("/semdono", JSON.stringify({'_id':project._id, 'responsavel-cadi': sessionStorage.getItem("sess_email_cadi")}), "json");
-                  location.reload();
-              });
-
-              modbody.append(body_sd);
-              modfooter.append(foot_sd);
+                /* Evento que fecha o modal e limpa os dados do append*/
+                $('#fecharModal').click(function(){
+                  document.getElementById('modal_semdono').style.display='none'; 
+                  modbody.html("");
+                  modfooter.html("");
+                });
+  
+                /* evento que submita a atribuição para o CADI */
+                $submit.click(function(){
+                    $.post("/semdono", JSON.stringify({'_id':project._id, 'responsavel-cadi': sessionStorage.getItem("sess_email_cadi")}), "json");
+                    location.reload();
+                });
+  
+                modbody.append(body_sd);
+                modfooter.append(foot_sd);
           });
-
-          tbody_semdono.append(tr2);
-        });
+            })
+          .fail( e => console.log(e))
+          
+          })
+          
+          
+          
       }
 
       function userData(user){
@@ -276,7 +299,7 @@ if(session_login == null){
 
           /* Pupula Usuário Data */
           let data = $.parseHTML(`
-          <li>${user.name}</li>
+          <li>${user.nome}</li>
           <li>${user.nivel == 2 ? "Administrador" : "Usuario CADI"}</li>`);
           /* </> Pupula Usuário Data */
           if(user.nivel == 2) {
@@ -395,7 +418,7 @@ function _isAdmin(users){
     users.forEach(user => {
       let tr = $.parseHTML(`<tr data-user-item="${ user._id }> 
         <th scope="row"></th>
-            <td>${ user.name }</td>
+            <td>${ user.nome }</td>
             <td>${ user.email }</td>
             <td>${ user.nivel < 1 ? 'Aguardando Aprovação' : user.nivel == 2 ? 'Administrador' : 'CADI' }</td>
             <td id="td-pass-${user._id.$oid}"></td>
@@ -541,7 +564,7 @@ function _formUpdateAcess(user){
   $('#submit_updateAcesso').click(function() {
     let nivel = $("input[name='optNivel']:checked").val();
 
-    if (confirm('Deseja realmente alterar o nivel de acesso do '+user.name)) {
+    if (confirm('Deseja realmente alterar o nivel de acesso do '+user.nome)) {
       $.post("/updateCadi", JSON.stringify({'_id':user._id, 'nivel': nivel}), "json");
     }
    

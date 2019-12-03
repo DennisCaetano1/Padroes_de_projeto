@@ -1,4 +1,3 @@
-var datas = [];
 var Timeline = function (endpoint) {
 
   if (!endpoint) {
@@ -11,7 +10,7 @@ var Timeline = function (endpoint) {
   function _getInitialModalHTML(projeto) {
     return `
       <div class="modal fade" id="modal-extra-${ projeto._id.$oid}" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog ${ projeto.fase == 5 ? 'modal-xl' : ''}" role="document">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="modal-label"></h5>
@@ -42,7 +41,7 @@ var Timeline = function (endpoint) {
       $(modalExtra + '.modal-footer').append(`
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <button type="button" class="btn btn-primary" aceitar-avaInit>Aceitar</button>
-          <button type="button" class="btn btn-primary" recusar-avaInit>Recusar</button>
+          <button type="button" class="btn btn-danger" recusar-avaInit>Recusar</button>
       </div>
       `);
 
@@ -60,14 +59,50 @@ var Timeline = function (endpoint) {
           alert(dataEntrega);
 
           alert(datas);
-          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'datasReuniao':datas, 'dataEntrega':dataEntrega}), "json");
+          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'datasReuniao':datas, 'dataEntrega':dataEntrega, 'responsavel-professor': $('#professor').val()}), "json");
           location.reload();
         }
+        if (projeto.fase == 5){
+          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'reuniao' : {'data':dataReuniao}}), "json");
+        }
       });
+      
+      $('[recusar-avaInit]').click(function (e) {
+          /*if (projeto.fase === 1) {
+            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'fase':2}), "json");
+            location.reload();
+          }
+          if(projeto.fase === 3){
+            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'fase':4}), "json");
+            location.reload();
+          }*/
+          if(projeto.fase === 4){
+        	  projeto.status.negado = true;
+        	  //$(document.body).prepend(_getModalRecusado(projeto));
+        	  //_getModalRecusado();
+          }
+          /*if (projeto.fase == 5){
+            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'reuniao' : {'data':dataReuniao}}), "json");
+          }*/
+        });
+      
+      function _getModalRecusado() {
+        	return
+        		`<div>
+        			<h3>Ação de Recusa</h3>
+        		 </div>
+        		 <form data-form-project-change>
+        		 <div class="form-group">
+        		 	<label for="formGroupRecusa">Insira o motivo da recusa:</label>
+        			<input type="text"  class="form-control" name="recusa" id="infoRecusa">
+        		 </div>
+        		 <div>
+        		 	<button type="submit" class="btn btn-danger" data-dismiss="modal">Recusar</button>
+        		 </div>
+        		 </form>
+        	`;
+        }
     }
-    // else if (projeto.fase == 4) {
-    //   $('.modal-dialog').addClass('modal-xl');
-    // }
   }
 
   function insertTimeline(target, projeto) {
@@ -91,6 +126,24 @@ var Timeline = function (endpoint) {
       else
         return '';
     }
+    
+    function _getModalRecusado() {
+      	return
+      		`<div>
+      			<h3>Ação de Recusa</h3>
+      		 </div>
+      		 <form data-form-project-change>
+      		 <div class="form-group">
+      		 	<label for="formGroupRecusa">Insira o motivo da recusa:</label>
+      			<input type="text"  class="form-control" name="recusa" id="infoRecusa">
+      		 </div>
+      		 <div>
+      		 	<button type="submit" class="btn btn-danger" data-dismiss="modal">Recusar</button>
+      		 </div>
+      		 </form>
+      	`;
+      }
+    
 
     function _getAvalInicHTML() {
       return `
@@ -161,34 +214,72 @@ var Timeline = function (endpoint) {
       <form data-form-project-change>
       <div class="form-group">
         <label for="formGroupInserirReunião">Insira data para reunião:</label>
-        <input type="text" format = "dd-MM-yyyy" class="form-control" name="date" id="dataReuniao" min="2019-10-14">
+        <input type="date"  class="form-control" name="date" id="dataReuniao">
+        <label for="formGroupInserirReunião">Insira um horário para reunião:</label>
+        <input type="time"  class="form-control" name="hora" id="horaReuniao">
+        <label for="formGroupInserirReunião">Insira um local para reunião:</label>
+        <input type="text"  class="form-control" name="local" id="localReuniao">
         <span class="validity"></span>
         <br>
         <button type="button" class="btn btn-success" id="insere-data" name="insere-data">Inserir</button>
       </div>
         <script>
        
-             var data = $('#dataReuniao').inputmask("datetime",{
-                        mask: "1-2-y h:s", 
-                        placeholder: "dd-mm-yyyy hh:mm", 
-                        leapday: "-02-29", 
-                        separator: "-", 
-                        alias: "dd-mm-yyyy"
-                        });
+       		 var datas = [];
+      		 var linhas = [];
+             var ind = 0;
+             var cont = 0;
+             var data = $('#dataReuniao');
+             var hora = $('#horaReuniao');
+             var local = $('#localReuniao');
             $("#insere-data").click(function () {           
-              console.log(data);
-              datas.push(data.val());
-              var linhadata = "<tr><td>"+data.val().toString()+"</tr></td>";
-              $("#tabdata").append(linhadata);              
+              var index = datas.length;
+              //var linha = data.val().toString()+" "+hora.val().toString()+" "+local.val().toString();
+              //linhas.push(linha);
+              var linha = new Object();
+              linha.data = data.val().toString();
+              linha.hora = hora.val().toString();
+              linha.local = local.val().toString();
+              
+              linhas.push(linha);
+              datas.push(linhas[cont]);
+      		  cont++;
+      		  console.log(linhas);
+      		  console.log(datas);
+              var linhadata = "<tr><td>"+data.val().toString()+"</td><td>"+hora.val().toString()+"</td><td>"+local.val().toString()+"</td><td><button type='button'  id='test' class='botao-remove-data btn btn-danger btn-sm' remove-data='"+index+"'>×</input></td></tr>";
+              
+              $("#tabdata").append(linhadata);  
+              var x = document.getElementById('test').getAttribute('remove-data');
+              console.log(x);
+           		               
             });
+            $(document).on("click", ".botao-remove-data", function(event){
+      			var idDataRem = this.getAttribute('remove-data');
+      			datas.splice(idDataRem, 1);
+      			console.log(datas);
+      			$("#tabdata").empty();
+      			ind = 0;
+      			datas.forEach(adcData);
+      		});
+            function adcData(data1){
+            		console.log(data1);
+            		/*var d = data1.slice(0, 10);
+            		var h = data1.slice(11, 16);
+            		var l = data1.slice(17, 20);*/
+      				var linhadata2 = "<tr><td>"+data1.data+"</td><td>"+data1.hora+"</td><td>"+data1.local+"</td><td><button type='button'  id='test' class='botao-remove-data btn btn-danger btn-sm' remove-data='"+ind+"'>×</input></td></tr>";
+              		$("#tabdata").append(linhadata2);
+              		ind++;
+            }
         </script>
         <label for="data-reuniao">Datas possiveis a reunião:</label>
 
-        <table class="table table-hover">
+        <table class="table table-hover" style="text-align:center;">
                   
               <thead>
               <tr>
-              <td scope="col">Datas</th>
+              <td scope="col">Data</th>
+              <td scope="col">Horário</th>
+              <td scope="col">Local</th>
               <td scope="col">Remover</th>
               </tr>
               </thead>
@@ -204,15 +295,15 @@ var Timeline = function (endpoint) {
             </div> 
         <span class="validity"></span>
            	<script>
+           	
+           	var profs = [];
            	  $(document).ready(function () {
-			
+           	  		
                 $.getJSON("/listarProf", function(data){
-                  
-                  var profs = [];
                   
                   $.each(data, function(i){
                       
-                    profs.push("<option>" + "Nome: " + this.name + " | Email: " + this.email + "</option>");
+                    profs.push("<option value="+this.email+">" + "Nome: " + this.name + " | Email: " + this.email + "</option> ");
                   });	
 
                 $('#professor').append(profs);
@@ -230,6 +321,11 @@ var Timeline = function (endpoint) {
 
     function _getEntregasHTML() {
       return `
+        ${projeto.fase == 6 ? '<span class="badge badge-success">Concluído</span>' : '<span class="badge badge-danger">Pendente</span>'}
+        <h5>Reunião</h5>
+        <h6>Data: ${projeto.reuniao.data}</h6>
+        <h6>Horario: ${projeto.reuniao.horario}</h6>
+        <h6>Local: ${projeto.reuniao.local}</h6>
         <table class="table">
           <thead>
             <tr>
@@ -322,9 +418,9 @@ var Timeline = function (endpoint) {
       {
         icon: _getIcon(''),
         title: 'Entrega',
-        isActive: projeto.fase == 5 && projeto.entregas.length,
-        isPending: projeto.fase > 4,// projeto.fase == 5 && !projeto.entregas.length,
-        isWaitingForInput: false
+        isActive: projeto.fase > 5,
+        isPending: projeto.fase == 5 && !projeto.entregas.length,
+        isWaitingForInput: projeto.fase == 5
       }
     ];
 
