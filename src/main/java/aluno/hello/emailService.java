@@ -1,4 +1,4 @@
-package aluno.hello;
+package hello;
 
 import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.Email;
@@ -33,8 +33,8 @@ public class emailService {
             simpleEmail.setAuthenticator(new DefaultAuthenticator(userName, password));
             simpleEmail.setSSLOnConnect(SSL_FLAG);
             simpleEmail.setFrom(fromAddress);
-            simpleEmail.setSubject("Antenas - Sua confirmação de conta ");
-            simpleEmail.setMsg("Por favor, para confirmar sua conta, clique no link: http://127.0.0.1:8081/active/"+basemeiaquatro);
+            simpleEmail.setSubject("Antenas - Confirmacao de conta ");
+            simpleEmail.setMsg("Por favor, para confirmar sua conta, clique no link: http://127.0.0.1:8080/ativar/aluno/"+basemeiaquatro);
             simpleEmail.addTo(this.destinatario.getString("email"));
             simpleEmail.send();
         }catch(Exception ex){
