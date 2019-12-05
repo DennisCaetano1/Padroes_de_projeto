@@ -1,4 +1,4 @@
-package hello;
+package aluno.hello;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -17,11 +17,13 @@ import spark.Request;
 import spark.Response;
 import spark.Route;
 
-public class REST {
+import antena.utils.*;;
 
-	private Model model;
+public class ControllerAluno {
 
-	public REST(Model model) {
+	private ModelAluno model;
+
+	public ControllerAluno(ModelAluno model) {
 		super();
 		this.model = model;
 	}
@@ -49,7 +51,7 @@ public class REST {
 
 					if (email.length() > 0 && senhaDigitada.equals(senhaArmazenada) && usuarioAtivo) {
 						response.status(200);
-						return autorProjeto.generateJwt(email);
+						return autorProjeto.GenerateJwt(email);
 					}
 					response.status(403);
 					return "Usuário inexistente ou inativo";
@@ -148,7 +150,7 @@ public class REST {
 						
 						if (encontrado == null || encontrado.isEmpty()) {
 							model.addAluno(dadosAluno);
-							new emailService(dadosAluno).sendSimpleEmail();
+							new emailService(dadosAluno).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link:", "aluno");
 							return dadosAluno.toJson();
 						}else {
 							return "Email ja cadastrado!";

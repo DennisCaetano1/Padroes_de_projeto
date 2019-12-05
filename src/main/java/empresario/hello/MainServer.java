@@ -6,11 +6,13 @@ import cadi.hello.ModelCadi;
 import professor.hello.ControllerProfessor;
 import professor.hello.ModelProfessor;
 import cadi.hello.ControllerCadi;
+import aluno.hello.*;
 
 public class MainServer {
 	final static Model model = new Model();
 	final static ModelCadi modelCadi = new ModelCadi();
 	final static ModelProfessor modelProf = new ModelProfessor();
+	final static ModelAluno modelAluno = new ModelAluno();
 	
     public static void main(String[] args) {
 
@@ -113,4 +115,18 @@ public class MainServer {
     	model.addProjeto(Document.parse("{'titulo':'Teste4','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Nadalete@fatec.sp.gov.br'},{'email':'Giuliano@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
     }
     
+    
+    public static void initializeControllerAluno() {
+    	ControllerAluno controller = new ControllerAluno(modelAluno);
+		controller.cadastroAluno();
+	    controller.search();
+	    controller.projetos();
+	    controller.atribuirProjeto();
+	    controller.entregaProjeto();
+	    controller.ativarUsuario();
+	    
+	    //validacao alunos
+	    controller.validaAluno();
+	    controller.loginAluno();
+    }
 }

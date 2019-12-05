@@ -1,5 +1,5 @@
 
-package hello;
+package aluno.hello;
 
 import static spark.Spark.*;
 
@@ -11,7 +11,7 @@ import com.mongodb.client.FindIterable;
 
 public class MainServer {
 
-	final static Model model = new Model();
+	final static ModelAluno model = new ModelAluno();
 	
     public static void main(String[] args) {
 
@@ -30,7 +30,7 @@ public class MainServer {
 
 		inicializarPesquisa();
  
-		REST controller = new REST(model);
+		ControllerAluno controller = new ControllerAluno(model);
 
 		controller.cadastroAluno();
 	    controller.search();
