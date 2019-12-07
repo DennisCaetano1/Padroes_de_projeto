@@ -34,6 +34,7 @@ public class MainServer {
 //        initializeModelCadi();
         initializeControllerProfessor();
         //initializeModelProfessor();
+        initializeControllerAluno();
     }
     
     public static void initializeControllerEmpresario() {
