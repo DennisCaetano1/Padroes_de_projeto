@@ -21,9 +21,9 @@ public class ModelAluno {
 	MongoDatabase db = mongoClient.getDatabase("app");
 
 	public String search(String chave) {
-
+		MongoDatabase db = fongo.getDatabase("app");
 		MongoCollection<Document> projects = db.getCollection("projeto");
-		FindIterable<Document> found = projects.find(new Document("", chave));
+		FindIterable<Document> found = projects.find(new Document("chave", chave));
 		String foundJson = StreamSupport.stream(found.spliterator(), false).map(Document::toJson)
 				.collect(Collectors.joining(", ", "[", "]"));
 		// System.out.println(foundJson);

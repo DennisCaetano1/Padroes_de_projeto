@@ -17,18 +17,39 @@ function excluir(data) {
 }
 function entregar() {
 
-    emails.push(sessionStorage.getItem("sess_email_aluno"));
-    const usuario = sessionStorage.getItem("sess_email_aluno");
-    descricao = document.getElementById("desc-cadastro").value;
-    link = document.getElementById("Link-cadastro").value;
-    const callbackSubmit = (data) => {
-        //todo
-    };
-    $.post("entregar",
-        JSON.stringify(
-            { "id": "1234", "autores": usuario, "descricao": descricao, "link": link }),
-        callbackSubmit,
-        'json');
-    window.location.href = 'principal.html';
+    let chaveProjeto = document.getElementById("chaveProjeto").value
+
+    const retornaBack = val => {
+        let email = sessionStorage.getItem("sess_email_aluno");
+        let linkRep = document.getElementById('Link-cadastro').value;
+        let linkCloud = document.getElementById('Link-cloud').value;
+        let coment = document.getElementById('desc-cadastro').value;
+        let nowBackEndData = JSON.parse(val);
+        let alunos = [];
+        let temp = document.getElementById('myTable');
+
+        for (i = 1; i < temp.rows.length ; i++) {
+            let aluno = temp.rows[i].firstElementChild.outerText;
+            alunos.push(aluno);
+        }
+        let entrega = {
+            "aluno-responsavel": email,
+            "alunos": alunos,
+            "link-repositorio": linkRep,
+            "link-cloud": linkCloud,
+            "comentario": coment
+        }
+        nowBackEndData[0].entregas.push(entrega);
+
+        const callbackSubmit = (data) => {
+            window.location.href = 'principal.html';
+        };
+        
+        $.post("/add-projeto", JSON.stringify(nowBackEndData[0]), callbackSubmit);
+    }
+
+    $.get("/search/" + chaveProjeto, retornaBack);
+    alert("Entrega realizada!");
+
 }
 
