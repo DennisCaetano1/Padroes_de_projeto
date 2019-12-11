@@ -1,5 +1,7 @@
 package professor.hello;
 
+import java.util.ArrayList;
+
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -14,14 +16,30 @@ import com.mongodb.client.model.FindOneAndUpdateOptions;
 public class ModelProfessor {
 
 	MongoClient mongoClient = new MongoClient( "127.0.0.1" );
-	MongoDatabase db = mongoClient.getDatabase("professor");
+	MongoDatabase db = mongoClient.getDatabase("app");
 	
-	public FindIterable<Document> myProjects(Document email) {
-		
+	public ArrayList<Document> myProjects(Document email) {
 		MongoCollection<Document> projetos = db.getCollection("projeto");
-		FindIterable<Document> found = projetos.find(new Document("responsavel-professor", email));
-
-		return found;
+		
+		Document query = new Document();
+		ArrayList<Document> projects = new ArrayList<Document>();
+		
+		
+		FindIterable<Document> found = projetos.find();
+		
+		for (Document d: found) {
+			ArrayList<String> emails = (ArrayList<String>) d.get("responsavel-professor");
+			
+			for(String emailFromProject: emails) {
+				String emailFromUser = (String) email.get("email");
+				
+				if (emailFromProject.equals(emailFromUser)) {
+					projects.add(d);
+				}
+			}
+		}
+		
+		return projects;
 	}
 	
 

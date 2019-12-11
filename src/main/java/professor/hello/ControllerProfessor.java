@@ -3,6 +3,7 @@ package professor.hello;
 import static spark.Spark.get;
 import static spark.Spark.post;
 
+import java.util.ArrayList;
 import java.util.Base64;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -13,7 +14,7 @@ import org.json.JSONObject;
 
 import com.mongodb.client.FindIterable;
 
-import antena.utils.Jwt;
+import antena.utils.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -36,7 +37,7 @@ public class ControllerProfessor {
 		WhoIsauth = whoIsauth;
 	}
 	
-	public void Auth() { // Gera um token de autenticação para o usuário
+	public void Auth() { // Gera um token de autenticaï¿½ï¿½o para o usuï¿½rio
 		post("/Auth", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
@@ -61,7 +62,7 @@ public class ControllerProfessor {
 						return AuthEngine.GenerateJwt(email);
 					}
 					response.status(403);
-					return "Usuário inexistente ou inativo";
+					return "Usuï¿½rio inexistente ou inativo";
 
 				} catch (JSONException ex) {
 					return "erro 500 " + ex;
@@ -70,7 +71,7 @@ public class ControllerProfessor {
 		});
 	}
 	
-	public boolean IsAuth(String body) { // Verifica se o usuário está autenticado
+	public boolean IsAuth(String body) { // Verifica se o usuï¿½rio estï¿½ autenticado
 		try {
 			// setting
 			JSONObject myjson = new JSONObject(body);
@@ -153,10 +154,10 @@ public class ControllerProfessor {
 
 					if (found == null || found.isEmpty()) {
 						model.addProfessor(userData);
-						new EmailService(userData).sendSimpleEmail("Antenas - Sua confirmaÃ§Ã£o de conta", "Por favor, para confirmar sua conta, clique no link: ", "professor");
+						new emailService(userData).sendSimpleEmail("Antenas - Sua confirmaÃ§Ã£o de conta", "Por favor, para confirmar sua conta, clique no link: ", "professor");
 						return userData.toJson();
 					} else {
-						return "Email já cadastrado";
+						return "Email jï¿½ cadastrado";
 					}
 				} catch (Exception ex) {
 					return "erro 500 " + ex;
@@ -181,12 +182,12 @@ public class ControllerProfessor {
 			return model.searchByEmail(email).toJson();
 		});
 		
-		/*restornar meus projetos que faço parte*/
+		/*restornar meus projetos que faï¿½o parte*/
 		get("/myprojects", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = request.queryString();
-				FindIterable<Document> projectFound = model.myProjects(new Document("email", email));
+				ArrayList<Document> projectFound = model.myProjects(new Document("email", email));
 				return StreamSupport.stream(projectFound.spliterator(), false)
 						.map(Document::toJson)
 						.collect(Collectors.joining(", ", "[", "]"));

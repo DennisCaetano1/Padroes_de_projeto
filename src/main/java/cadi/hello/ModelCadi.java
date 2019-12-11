@@ -93,12 +93,8 @@ public class ModelCadi {
 		MongoDatabase db = mongoClient.getDatabase("app");
 		MongoCollection<Document> cadis = db.getCollection("cadi");
 		Document cadi = searchByEmail(email);
-		cadis.deleteOne(cadi);
 		cadi.replace("ativo", true);
-		BasicDBObject query = new BasicDBObject();
-		query.append("id", cadi.get("id"));
-		cadis.replaceOne(query, cadi);
-		return cadi;
+		return updateCadi(cadi);
 	}
 
 	

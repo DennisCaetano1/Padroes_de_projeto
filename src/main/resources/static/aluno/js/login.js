@@ -41,7 +41,7 @@ $('[data-login-form]').on('submit', function(event){
         .done(function(token){
             localStorage.setItem('token', token);
             sessionStorage.setItem("sess_email_aluno", dados.email);
-            location.replace('/principal.html');
+            location.replace('/aluno/principal.html');
         })
         .fail(function() {
             logando = false;
@@ -133,7 +133,7 @@ $('#sair').click(function(e){
 
     localStorage.removeItem('token');
     sessionStorage.setItem("sess_email_aluno", '');
-    location.replace('/');
+    location.replace('/aluno');
 })
 
 

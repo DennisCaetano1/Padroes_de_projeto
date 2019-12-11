@@ -39,7 +39,7 @@ public class ControllerAluno {
 					// set
 		
 					JSONObject jsonLogin = new JSONObject(request.body());
-					//Nao colocar Jwt no projeto que será integrado
+					//Nao colocar Jwt no projeto que serï¿½ integrado
 					Jwt autorProjeto = new Jwt();
 
 					// try to find user
@@ -54,7 +54,7 @@ public class ControllerAluno {
 						return autorProjeto.GenerateJwt(email);
 					}
 					response.status(403);
-					return "Usuário inexistente ou inativo";
+					return "Usuï¿½rio inexistente ou inativo";
 
 				}catch (JSONException ex) {
 					return "erro 500 " + ex;
@@ -101,7 +101,7 @@ public class ControllerAluno {
 	
 	
 	public void ativarUsuario() { //Link de ativacao do cadastro por email
-		get("/ativar/aluno/:email", new Route() {
+		get("/active/aluno/:email", new Route() {
 			@Override
 			public Object handle(final Request request, final Response response) {
 				String email = new String(Base64.getDecoder().decode ( request.params("email")  )) ;
@@ -109,7 +109,7 @@ public class ControllerAluno {
 				found.replace("ativo", true);
 				model.updateAluno(found);
 				if (!found.isEmpty()) {
-					response.redirect("http://localhost:8080/"); //8081
+					response.redirect("/aluno"); //8081
 				}
 
 				return null;
@@ -150,7 +150,7 @@ public class ControllerAluno {
 						
 						if (encontrado == null || encontrado.isEmpty()) {
 							model.addAluno(dadosAluno);
-							new emailService(dadosAluno).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link:", "aluno");
+							new emailService(dadosAluno).sendSimpleEmail("Antenas - Sua confirmaï¿½ï¿½o de conta", "Por favor, para confirmar sua conta, clique no link:", "aluno");
 							return dadosAluno.toJson();
 						}else {
 							return "Email ja cadastrado!";
