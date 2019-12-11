@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import com.mongodb.client.FindIterable;
 
-import antena.utils.Jwt;
+import antena.utils.*;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -154,7 +154,7 @@ public class ControllerProfessor {
 
 					if (found == null || found.isEmpty()) {
 						model.addProfessor(userData);
-						new EmailService(userData).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link: ", "professor");
+						new emailService(userData).sendSimpleEmail("Antenas - Sua confirmação de conta", "Por favor, para confirmar sua conta, clique no link: ", "professor");
 						return userData.toJson();
 					} else {
 						return "Email j� cadastrado";

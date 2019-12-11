@@ -28,13 +28,14 @@ public class MainServer {
 
 		staticFileLocation("/static");
 
-//		initializeModelEmpresario();
+		initializeModelEmpresario();
         initializeControllerEmpresario();
         initializeControllerCadi();
-//        initializeModelCadi();
+        initializeModelCadi();
         initializeControllerProfessor();
-        //initializeModelProfessor();
+        initializeModelProfessor();
         initializeControllerAluno();
+        modelAluno.addAluno(Document.parse("{'name':'Leticia', 'email':'leticia.carvalho11@fatec.sp.gov.br','senha':'123', 'ativo':true}"));
     }
     
     public static void initializeControllerEmpresario() {
@@ -83,14 +84,14 @@ public class MainServer {
     	modelCadi.addCADI(Document.parse("{'email':'cadi.admin@fatec.sp.gov.br','name':'Administrador', 'senha':'1234', 'nivel':'2', 'ativo':true}"));
     	modelCadi.addCADI(Document.parse("{'email':'teste@email.com','name':'Francisco', 'senha':'000', 'nivel':'0', 'ativo':true}"));
     	//inicializar usu�rios professores
-    	modelCadi.addProfessores(Document.parse("{'name':'Giuliano', 'email':'Giuliano@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
-    	modelCadi.addProfessores(Document.parse("{'name':'Sakaue', 'email':'Sakaue@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
-    	modelCadi.addProfessores(Document.parse("{'name':'Nanci', 'email':'Nanci@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
+    	//modelCadi.addProfessores(Document.parse("{'name':'Giuliano', 'email':'Giuliano@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
+    	//modelCadi.addProfessores(Document.parse("{'name':'Sakaue', 'email':'Sakaue@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
+    	//modelCadi.addProfessores(Document.parse("{'name':'Nanci', 'email':'Nanci@fatec.sp.gov.br', 'projeto-atribuido':'', 'nivel':'1'}"));
     	//inicializar projetos
-    	modelCadi.addProjeto(Document.parse("{'titulo':'Teste','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [],'alunos':[],'responsavel-cadi':'','responsavel-professor':[],'responsavel-empresario':'teste@teste'}"));
-    	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste1', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : '', 'descricao-tecnologias' : '', 'link-externo-1' : '', 'link-externo-2' : '', 'fase' : 1, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
-    	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste2', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 3, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
-    	modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste3', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 4, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
+    	//modelCadi.addProjeto(Document.parse("{'titulo':'Teste','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [],'alunos':[],'responsavel-cadi':'','responsavel-professor':[],'responsavel-empresario':'teste@teste'}"));
+    	//modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste1', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : '', 'descricao-tecnologias' : '', 'link-externo-1' : '', 'link-externo-2' : '', 'fase' : 1, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
+    	//modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste2', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 3, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
+    	//modelCadi.addProjeto(Document.parse("{'titulo' : 'Teste3', 'descricao-breve' : 'Teste descricao', 'descricao-completa' : 'Essa � a descri��o completa', 'descricao-tecnologias' : 'Essa � a descri��o de tecnologias', 'link-externo-1' : 'http://linkzao.com', 'link-externo-2' : 'http://linkzera.com', 'fase' : 4, 'reuniao' : { 'data' : '', 'horario' : '', 'local' : '', 'datas-possiveis' : [] }, 'status' : { 'negado' : false, 'motivo' : 'falta de informações' }, 'entregas' : [], 'alunos' : [], 'responsavel-cadi' : '', 'responsavel-professor' : [], 'responsavel-empresario' : 'teste@teste' }"));
     }
     
     public static void initializeControllerProfessor() {
@@ -110,10 +111,6 @@ public class MainServer {
     	modelProf.addProfessor(Document.parse("{'name':'Sakaue', 'email':'Sakaue@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
     	modelProf.addProfessor(Document.parse("{'name':'Nanci', 'email':'Nanci@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
     	
-    	model.addProjeto(Document.parse("{'titulo':'Teste','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Giuliano@fatec.sp.gov.br'},{'email':'Sakaue@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
-    	model.addProjeto(Document.parse("{'titulo':'Teste2','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Nadalete@fatec.sp.gov.br'},{'email':'Sakaue@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
-    	model.addProjeto(Document.parse("{'titulo':'Teste3','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Giuliano@fatec.sp.gov.br'},{'email':'Nadalete@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
-    	model.addProjeto(Document.parse("{'titulo':'Teste4','descricao-breve' :'Teste descricao', 'descricao-completa':'','descricao-tecnologias':'','link-externo-1':'','link-externo-2':'','fase': 1,'reuniao' :{'data' :'','horario' :'','local':'','datas-possiveis' : [] },'status' : {'negado' : false,'motivo':'' },'entregas' : [{'email':'rone.bento@fatec.sp.gov.br'},{'email':'jose.bento@fatec.sp.gov.br'}],'alunos':[{'email':'Isabella@fatec.sp.gov.br'},{'email':'Kleber@fatec.sp.gov.br'}],'responsavel-cadi':'','responsavel-professor':[{'email':'Nadalete@fatec.sp.gov.br'},{'email':'Giuliano@fatec.sp.gov.br'}],'responsavel-empresario':'teste@teste'}"));
     }
     
     
