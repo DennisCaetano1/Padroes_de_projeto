@@ -67,7 +67,7 @@ $(document).ready(function () {
 			}
 		}
 
-		$.get("/search/" + codigoProjeto, retornaBack);
+		$.get("/searchaluno/" + codigoProjeto, retornaBack);
 
 	});
 

@@ -48,7 +48,7 @@ function entregar() {
         $.post("/add-projeto", JSON.stringify(nowBackEndData[0]), callbackSubmit);
     }
 
-    $.get("/search/" + chaveProjeto, retornaBack);
+    $.get("/searchaluno/" + chaveProjeto, retornaBack);
     alert("Entrega realizada!");
 
 }
