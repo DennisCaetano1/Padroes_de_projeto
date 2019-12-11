@@ -23,10 +23,10 @@ $(document).ready(function () {
 				console.log(index);
 				var $tela = document.querySelector('#tpjr'),
 					HTMLTemporario = $tela.innerHTML,
-					HTMLNovo = "<tr> <th>" + projects[index]._id + "</th>"
+					HTMLNovo = "<tr> <th>" + projects[index].chave + "</th>"
 						+ "<th>" + projects[index].titulo + "</th>" + "<th>"
 						+ projects[index].fase + "</th>"
-						+ "<th><a href class='text' onclick='abrePopupPost(event)'>Entregar</a></th>"
+						+ `<th><button onclick="abrePopupEntregar(event,chave='${projects[index].chave}')">Entregar</button></th>`
 						+ "</tr>";
 				HTMLTemporario = HTMLTemporario + HTMLNovo;
 				$tela.innerHTML = HTMLTemporario;
@@ -68,11 +68,7 @@ $(document).ready(function () {
 		}
 
 		$.get("/search/" + codigoProjeto, retornaBack);
-	});
 
-	$('#botao-add-aluno').click(function (event) {
-		event.preventDefault();
-		document.getElementById('cadastro').style.display = 'block';
 	});
 
 	function abrePopupLogin(event) {
@@ -83,16 +79,6 @@ $(document).ready(function () {
 	function fechaPopupLogin(event) {
 		event.preventDefault();
 		document.getElementById('login').style.display = 'none';
-	}
-
-	function fechaPopupCadastro(event) {
-		event.preventDefault();
-		document.getElementById('cadastro').style.display = 'none';
-	}
-
-	function abrePopupPost(event) {
-		event.preventDefault();
-		document.getElementById('cadastro').style.display = 'block';
 	}
 
 });	

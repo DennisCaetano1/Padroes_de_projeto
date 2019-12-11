@@ -75,7 +75,7 @@ $('#form_cadastro').submit(function(e){
 	{
 	    $.post("/aluno-cadastro",JSON.stringify(json),'json')
 	    .done(function(){
-            alert('Te enviamos um email com um link, acesse-o para ativar sua conta.');
+            alert('Acesse sua caixa de email e clique no link enviado para ativar sua conta!');
             location.reload();
         });
 	    fechaPopupCadastro(event);
@@ -83,7 +83,6 @@ $('#form_cadastro').submit(function(e){
     else
     {
     	alert("O cadastro só pode ser realizado com seu e-mail institucional");
-    
     }
 });
 
@@ -92,7 +91,7 @@ function validaEmail(email) {
     let texto = /^\s*[\w\-\+_]+(\.[\w\-\+_]+)*\@[\w\-\+_]+\.[\w\-\+_]+(\.[\w\-\+_]+)*\s*$/;
     if (texto.test(email)) {
         if (email.indexOf('@fatec.sp.gov.br', email.length - '@fatec.sp.gov.br'.length) !== -1) {
-            alert('Cadastro realizado com sucesso!');
+            alert('Te enviamos um email com um link, acesse-o para ativar sua conta.');
             return true;
         } else {
             alert('Use seu e-mail institucional para realizar o cadastro (seu.nome@fatec.sp.gov.br)');
