@@ -1,5 +1,6 @@
 var Timeline = function (endpoint) {
 
+  
   if (!endpoint) {
     throw new Error('É preciso de um endpoint de salvamento de projeto para instanciar Timeline');
   }
@@ -9,7 +10,7 @@ var Timeline = function (endpoint) {
 
   function _getInitialModalHTML(projeto) {
     return `
-      <div class="modal fade" id="modal-extra-${ projeto._id.$oid}" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true">
+      <div class="modal fade" id="modal-extra-${ projeto._id.$oid}" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" data-focus-on="input:first">
         <div class="modal-dialog ${ projeto.fase == 5 ? 'modal-xl' : ''}" role="document">
           <div class="modal-content">
             <div class="modal-header">
@@ -26,6 +27,28 @@ var Timeline = function (endpoint) {
           </div>
         </div>
       </div>
+      <div class="modal fade" id="modalRecusa" tabindex="-1" role="dialog" aria-labelledby="modal-label" aria-hidden="true" data-focus-on="input:first">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="tituloRecusa">Recusar Projeto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <form data-form-project-change>
+                  <div class="modal-body">
+                 	<label for="formGroupRecusa">Insira o motivo da recusa:</label>
+        			<input type="text"  class="form-control" name="recusa" id="recusa">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-danger"  data-dismiss="modal" recusar>Recusar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                  </div>
+                  </form>
+                </div>
+              </div>
+            </div>
     `;
   }
 
@@ -36,12 +59,20 @@ var Timeline = function (endpoint) {
     $('#modal-label').text(projeto.titulo);
 
     $(modalExtra + '.modal-body').html(inputsHTML);
+    
+    $(document).on('show.bs.modal', '.modal', function () {
+        var zIndex = 1040 + (10 * $('.modal:visible').length);
+        $(this).css('z-index', zIndex);
+        setTimeout(function() {
+            $('.modal-backdrop').not('.modal-stack').css('z-index', zIndex - 1).addClass('modal-stack');
+        }, 0);
+    });
 
     if ([1, 3, 4].indexOf(projeto.fase) != -1) {
       $(modalExtra + '.modal-footer').append(`
       <div class="btn-group btn-group-toggle" data-toggle="buttons">
           <button type="button" class="btn btn-primary" aceitar-avaInit>Aceitar</button>
-          <button type="button" class="btn btn-danger" recusar-avaInit>Recusar</button>
+          <button type="button"  class="btn btn-danger" data-toggle="modal" href="#modalRecusa">Recusar</a>
       </div>
       `);
 
@@ -67,41 +98,12 @@ var Timeline = function (endpoint) {
         }
       });
       
-      $('[recusar-avaInit]').click(function (e) {
-          /*if (projeto.fase === 1) {
-            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'fase':2}), "json");
-            location.reload();
-          }
-          if(projeto.fase === 3){
-            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'fase':4}), "json");
-            location.reload();
-          }*/
-          if(projeto.fase === 4){
-        	  projeto.status.negado = true;
-        	  //$(document.body).prepend(_getModalRecusado(projeto));
-        	  //_getModalRecusado();
-          }
-          /*if (projeto.fase == 5){
-            $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'reuniao' : {'data':dataReuniao}}), "json");
-          }*/
+      $('[recusar]').click(function (e) {
+    	  	var rec = document.getElementById('recusa');
+    	  	$.post("/pulafase", JSON.stringify({'_id':projeto._id, 'status' : {'negado':true, 'motivo':rec.value}}), "json");
+    	  	location.reload();
         });
       
-      function _getModalRecusado() {
-        	return
-        		`<div>
-        			<h3>Ação de Recusa</h3>
-        		 </div>
-        		 <form data-form-project-change>
-        		 <div class="form-group">
-        		 	<label for="formGroupRecusa">Insira o motivo da recusa:</label>
-        			<input type="text"  class="form-control" name="recusa" id="infoRecusa">
-        		 </div>
-        		 <div>
-        		 	<button type="submit" class="btn btn-danger" data-dismiss="modal">Recusar</button>
-        		 </div>
-        		 </form>
-        	`;
-        }
     }
   }
 
@@ -126,23 +128,6 @@ var Timeline = function (endpoint) {
       else
         return '';
     }
-    
-    function _getModalRecusado() {
-      	return
-      		`<div>
-      			<h3>Ação de Recusa</h3>
-      		 </div>
-      		 <form data-form-project-change>
-      		 <div class="form-group">
-      		 	<label for="formGroupRecusa">Insira o motivo da recusa:</label>
-      			<input type="text"  class="form-control" name="recusa" id="infoRecusa">
-      		 </div>
-      		 <div>
-      		 	<button type="submit" class="btn btn-danger" data-dismiss="modal">Recusar</button>
-      		 </div>
-      		 </form>
-      	`;
-      }
     
 
     function _getAvalInicHTML() {
