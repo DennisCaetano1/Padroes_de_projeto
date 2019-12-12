@@ -84,8 +84,8 @@ var Timeline = function (endpoint) {
               ...newProject,
               fase: 5,
               reuniao: {
-                data: reuniaoData[0],
-                horario: reuniaoData[1]
+                data: horarioReuniao[0],
+                horario: horarioReuniao[1],
               }
             };
 

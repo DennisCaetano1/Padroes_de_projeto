@@ -399,13 +399,13 @@ var Timeline = function (endpoint) {
         isActive: projeto.fase > 4,
         isPending: projeto.fase == 4 && !projeto.reuniao['datas-possiveis'].length,
         isWaitingForInput: projeto.fase == 4 //projeto.fase == 4 && projeto.reuniao['datas-possiveis'].length
-      },
+      }, 
       {
         icon: _getIcon(''),
         title: 'Entrega',
-        isActive: projeto.fase > 5,
+        isActive: projeto.fase >= 5,
         isPending: projeto.fase == 5 && !projeto.entregas.length,
-        isWaitingForInput: projeto.fase == 5
+        isWaitingForInput: false
       }
     ];
 
