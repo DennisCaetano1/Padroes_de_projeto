@@ -56,9 +56,7 @@ var Timeline = function (endpoint) {
         }
         if(projeto.fase === 4){
           var dataEntrega= $('#formGroupInserirEntrega').val();
-          alert(dataEntrega);
-
-          alert(datas);
+         
           $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'datasReuniao':datas, 'dataEntrega':dataEntrega, 'responsavel-professor': $('#professor').val()}), "json");
           location.reload();
         }
@@ -244,19 +242,16 @@ var Timeline = function (endpoint) {
               linhas.push(linha);
               datas.push(linhas[cont]);
       		  cont++;
-      		  console.log(linhas);
-      		  console.log(datas);
               var linhadata = "<tr><td>"+data.val().toString()+"</td><td>"+hora.val().toString()+"</td><td>"+local.val().toString()+"</td><td><button type='button'  id='test' class='botao-remove-data btn btn-danger btn-sm' remove-data='"+index+"'>×</input></td></tr>";
               
               $("#tabdata").append(linhadata);  
               var x = document.getElementById('test').getAttribute('remove-data');
-              console.log(x);
+              
            		               
             });
             $(document).on("click", ".botao-remove-data", function(event){
       			var idDataRem = this.getAttribute('remove-data');
       			datas.splice(idDataRem, 1);
-      			console.log(datas);
       			$("#tabdata").empty();
       			ind = 0;
       			datas.forEach(adcData);
