@@ -26,8 +26,15 @@ $('#form_register').submit(function(e){
     modalfoot.append($.parseHTML(`<div class="alert alert-primary" role="alert">Aguarde...</div>`));
     
     $.post("/cadicadastro",jsonString, function(data){
-        if(data.ativo == false)modalfoot.html(""); modalfoot.append($.parseHTML(`<div class="alert alert-success" role="alert">
-        Verifique seu e-mail para a ativação</div>`));
+        console.log(data);
+        if(data.ativo == false) {
+            modalfoot.html(""); 
+            modalfoot.append($.parseHTML(`<div class="alert alert-success" role="alert">
+            Verifique seu e-mail para a ativação</div>`)); 
+        }if(data == 0){
+            modalfoot.html(""); 
+            modalfoot.append($.parseHTML(`<div class="alert alert-danger" role="alert">Usuário já cadastrado</div>`)); 
+        }
     }, "json");
     //fechaPopupCadastro(event);
 });

@@ -163,24 +163,36 @@ if(session_login == null){
                   }
                 }
                 else if (item.key === 'entregas' || item.key ==='responsavel-professor') {
-                  $('li').remove();
+                  $('#info-entregas li').remove();
                   if (!project[item.key].length) {
                     item.element.addClass('d-none');
                     return;
                   }
                   else {
-                    project[item.key].forEach(x => {
-                      console.log(x);
-                      contentElement.append($.parseHTML(`<li>${x['aluno-responsavel']}</li>`));
-                      x['alunos'].forEach(x => {
-                      contentElement.append($.parseHTML(`<li>${x}</li>`));
-                      });
+                      project[item.key].forEach(x => {
+                        console.log(x);
+                        contentElement.append($.parseHTML(`<li class="divider list-group-item-info">Aluno Responsável: </li>
+                        <li>${x['aluno-responsavel']}</li>
+                        <li class="divider list-group-item-info">Alunos</li>`));
+
+                        x['alunos'].forEach(x => {
+                            contentElement.append($.parseHTML(`<li>${x}</li>`));
+                        });
+
+                        contentElement.append($.parseHTML(`
+                        <li class="divider list-group-item-info"></li>
+                        <li>Link Respositório: <a href="${x['link-repositorio']}">${x['link-repositorio']}</a></li>
+                            <li>Link Cloud: <a href="${x['link-cloud']}">${x['link-cloud']}</a></li>
+                            <li>Comentário: ${x['comentario']}</li>
+                        `));
                     });
                   }
                 }
               });
+              $('#modal-mais-info ul').addClass('list-group');
+              $('#modal-mais-info li').addClass('list-group-item');
             });
-      
+         
             timeline.insertTimeline($tr.find('[data-timeline-show]').get(0), project);
       
             tbody.append(tr);
@@ -265,7 +277,7 @@ if(session_login == null){
 
       function userData(user){
           /* <> Logou do Usuário */
-          let navCADI = $('[data-user]');
+          let navCADI = $('[data-user-nav]');
           let logout = $.parseHTML(`
           <li><i class="fa fa-sign-out" aria-hidden="true"></i> 
           <button type="button" class="btn btn-danger">Logout</button></li>`);
@@ -412,8 +424,6 @@ function _isAdmin(users){
 
     ul_tabs.append(nav);
     div_content.append(content);
-
-    let tbody_data_users = $('[data-user-admintab]');
     
     users.forEach(user => {
       let tr = $.parseHTML(`<tr data-user-item="${ user._id }> 
@@ -426,7 +436,7 @@ function _isAdmin(users){
         </tr>
     `);
 
-       tbody_data_users.append(tr);
+    $('[data-user-admintab]').append(tr);
 
       /* Alterar Senha */
       let updateSenha = $.parseHTML(`
