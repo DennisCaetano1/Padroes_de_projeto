@@ -55,11 +55,11 @@ var Timeline = function (endpoint) {
           location.reload();
         }
         if(projeto.fase === 4){
-          var dataEntrega= $('#formGroupInserirEntrega').val();
+          var dataEntrega= $('#formGroupInserirEntrega').val();  
           alert(dataEntrega);
 
           alert(datas);
-          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'datasReuniao':datas, 'dataEntrega':dataEntrega, 'responsavel-professor': $('#professor').val()}), "json");
+          $.post("/pulafase", JSON.stringify({'_id':projeto._id, 'reuniao': {'datas-possiveis':datas}, 'dataEntrega':dataEntrega, 'responsavel-professor': $('#professor').val()}), "json");
           location.reload();
         }
         if (projeto.fase == 5){

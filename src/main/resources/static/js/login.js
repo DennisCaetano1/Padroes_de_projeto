@@ -30,6 +30,7 @@ $("#btn-cadastro").click(function(event) {
     var json = {
       nome: $("#nome-cadastro").val(),
       email: $("#email-cadastro").val(),
+      empresa: $("#empresa-cadastro").val(),
       cpf: $("#cpf-cadastro").val(),
       senha: $("#senha-cadastro").val()
     };

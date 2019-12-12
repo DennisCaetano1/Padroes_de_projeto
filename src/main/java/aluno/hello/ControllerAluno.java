@@ -175,7 +175,7 @@ public class ControllerAluno {
 	}
 
 	public void search() {
-		get("/search/:id", (request, response) -> {
+		get("/searchaluno/:id", (request, response) -> {
 			return model.search(request.params(":id"));
 		});
 

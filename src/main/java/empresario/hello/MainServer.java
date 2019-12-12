@@ -12,7 +12,7 @@ public class MainServer {
 	final static Model model = new Model();
 	final static ModelCadi modelCadi = new ModelCadi();
 	final static ModelProfessor modelProf = new ModelProfessor();
-	final static ModelAluno modelAluno = new ModelAluno();
+	final static ModelAluno modelAluno = new ModelAluno(); 
 	
     public static void main(String[] args) {
 
@@ -28,12 +28,12 @@ public class MainServer {
 
 		staticFileLocation("/static");
 
-		initializeModelEmpresario();
+		//initializeModelEmpresario();
         initializeControllerEmpresario();
         initializeControllerCadi();
-        initializeModelCadi();
+        //initializeModelCadi();
         initializeControllerProfessor();
-        initializeModelProfessor();
+        //initializeModelProfessor();
         initializeControllerAluno();
         modelAluno.addAluno(Document.parse("{'name':'Leticia', 'email':'leticia.carvalho11@fatec.sp.gov.br','senha':'123', 'ativo':true}"));
     }

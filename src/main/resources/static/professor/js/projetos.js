@@ -211,9 +211,9 @@ function _AlunosPresentes(project){
 
   project.alunos.forEach(aluno => {
     let remover = project.alunos.indexOf(aluno)
-    let td =  $.parseHTML(`<tr data-alunos-item="${aluno.email}> 
-            <th scope="row">${aluno.email}</th>
-                <td>${aluno.email}</td>
+    let td =  $.parseHTML(`<tr data-alunos-item="${aluno}> 
+            <th scope="row">${aluno}</th>
+                <td>${aluno}</td>
                 <td btn-remove-al-${remover}></td>
             </tr>
           `);
