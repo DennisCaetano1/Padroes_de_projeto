@@ -28,12 +28,12 @@ public class MainServer {
 
 		staticFileLocation("/static");
 
-		//initializeModelEmpresario();
+		initializeModelEmpresario();
         initializeControllerEmpresario();
         initializeControllerCadi();
-        //initializeModelCadi();
+        initializeModelCadi();
         initializeControllerProfessor();
-        //initializeModelProfessor();
+        initializeModelProfessor();
         initializeControllerAluno();
         modelAluno.addAluno(Document.parse("{'name':'Leticia', 'email':'leticia.carvalho11@fatec.sp.gov.br','senha':'123', 'ativo':true}"));
     }
@@ -105,7 +105,7 @@ public class MainServer {
 	    controller.inserirProfessor();
     }
 
-    public static void initializeModelProfessor(){
+	public static void initializeModelProfessor(){
     	//Professores
     	modelProf.addProfessor(Document.parse("{'name':'Giuliano', 'email':'Giuliano@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
     	modelProf.addProfessor(Document.parse("{'name':'Sakaue', 'email':'Sakaue@fatec.sp.gov.br','senha':'1234', 'ativo':true}"));
